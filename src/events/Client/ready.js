@@ -1,4 +1,5 @@
 const { Client } = require("discord.js");
+const chalk = require("chalk");
 
 module.exports = {
   name: "ready",
@@ -7,6 +8,6 @@ module.exports = {
    * @param {Client} client
    */
   run: (client) => {
-    console.log(`[BOT] || ${client.user.username}, is ready!`);
+    console.log(chalk.green(`[BOT] || ${client.user.username}, is ready!`));
   },
 };
