@@ -17,7 +17,7 @@ module.exports = {
         name: interaction.user.username,
         iconURL: interaction.user.displayAvatarURL(),
       })
-      .setDescription(`**Process uptime:** ${uptimeString(interaction.client)}`)
+      .setDescription(`**Uptime:** ${uptimeString(interaction.client)}`)
       .setColor("Green")
       .setTimestamp();
 

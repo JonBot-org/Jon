@@ -25,9 +25,9 @@ module.exports = {
       .setDescription(
         `**Version:** ${version.version}\n**Release Date:** ${version.date}\n**Author:** ${version.author}\n**Commit:** [${version.data.commit}](https://github.com/JonBot-org/Jon/commit/${version.data.commit})\n\n**Changes:**\n${codeBlock(version.changes.map((e) => e).join("\n"))}`,
       )
-      .setColor('Green')
+      .setColor("Green")
       .setTimestamp();
 
-      return interaction.reply({ embeds: [embed], ephemeral: true })
+    return interaction.reply({ embeds: [embed], ephemeral: true });
   },
 };

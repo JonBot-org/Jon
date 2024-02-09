@@ -84,6 +84,6 @@ async function deploy() {
     },
   );
   console.log(chalk.green(`[COMMAND] || Updated (/) commands.`));
-};
+}
 
 client.login();
