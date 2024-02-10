@@ -10,6 +10,6 @@ module.exports = {
       "- moment & moment-duration-format.",
     ],
     data: {
-      commit: "/",
+      commit: "0b71de0",
     },
   };
