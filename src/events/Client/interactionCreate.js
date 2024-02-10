@@ -32,6 +32,15 @@ module.exports = {
       console.log(
         chalk.green(`[COMMAND] || Executing ${command.data.name}...`),
       );
+
+      command.run(interaction);
+    } else if (interaction.isMessageContextMenuCommand()) {
+      const command = interaction.client.commands.get(interaction.commandName);
+
+      if (!command) {
+        return;
+      }
+
       command.run(interaction);
     }
   },

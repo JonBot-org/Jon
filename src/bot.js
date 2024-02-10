@@ -1,16 +1,12 @@
 require("dotenv").config();
-const {
-  Client,
-  GatewayIntentBits,
-  REST,
-  Collection,
-  Routes,
-} = require("discord.js");
+const { Client, GatewayIntentBits, Collection, Partials } = require("discord.js");
 const fs = require("node:fs");
 const chalk = require("chalk");
+const { default: mongoose } = require("mongoose");
 
 const client = new Client({
   intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers],
+  partials: [Partials.Channel]
 });
 
 (() => {
@@ -55,7 +51,9 @@ const client = new Client({
   client.commands = new Collection();
   client.commandsArray = [];
   console.log(chalk.yellow(`[BOT] || Starting command handler...`));
-  const files = fs.readdirSync("./src/commands/");
+  const files = fs
+    .readdirSync("./src/commands/")
+    .filter((v) => v.endsWith(".js"));
   for (const file of files) {
     console.log(chalk.cyan(`[COMMAND] || Reading ${file}...`));
     const command = require(`./commands/${file}`);
@@ -70,20 +68,17 @@ const client = new Client({
       );
     }
   }
-
-  //deploy();
 })();
 
-async function deploy() {
-  console.log(chalk.yellow(`[COMMAND] || Initializing REST client...`));
-  const rest = new REST().setToken(process.env.DISCORD_TOKEN);
-  const data = await rest.put(
-    Routes.applicationCommands(process.env.CLIENT_ID),
-    {
-      body: client.commandsArray,
-    },
-  );
-  console.log(chalk.green(`[COMMAND] || Updated (/) commands.`));
+async function start() {
+  try {
+    mongoose.connect(process.env.MONGO_DB).then((mongo) => {
+      console.log(chalk.green("[MONGO] || Connected"));
+    });
+    await client.login();
+  } catch (error) {
+    console.error(chalk.red(error));
+  }
 }
 
-client.login();
+void start();
