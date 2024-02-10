@@ -14,7 +14,7 @@ module.exports = {
       process.env.NODE_ENV = "development";
     }
 
-    // deploy(client);
+    deploy(client);
 
     console.log(
       chalk.green(
