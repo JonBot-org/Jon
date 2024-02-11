@@ -8,6 +8,6 @@ module.exports = {
       "/ formated files."
     ],
     data: {
-      commit: "/",
+      commit: "b3ca471",
     },
   };
