@@ -28,7 +28,7 @@ module.exports = {
         embeds: [
           embed
             .setDescription(
-              `${emojis.utility.false.raw} | **I can't delete this message, this message does not belong to me.**`,
+              `${emojis.false} | **I can't delete this message, this message does not belong to me.**`,
             )
             .setColor("Orange"),
         ],
@@ -41,7 +41,7 @@ module.exports = {
         embeds: [
           embed
             .setDescription(
-              `${emojis.utility.false.raw} | **This message is not a interaction command, i can't delete this.**`,
+              `${emojis.false} | **This message is not a interaction command, i can't delete this.**`,
             )
             .setColor("Orange"),
         ],
@@ -56,7 +56,7 @@ module.exports = {
         embeds: [
           embed
             .setDescription(
-              `${emojis.utility.false.raw} | **You did not use this interaction command.**`,
+              `${emojis.false} | **You did not use this interaction command.**`,
             )
             .setColor("Orange"),
         ],
@@ -69,7 +69,7 @@ module.exports = {
       return interaction.reply({
         embeds: [
           embed
-            .setDescription(`${emojis.utility.true.raw} | **Done!**`)
+            .setDescription(`${emojis.true} | **Done!**`)
             .setColor("Green"),
         ],
         ephemeral: true,
@@ -79,7 +79,7 @@ module.exports = {
         embeds: [
           embed
             .setDescription(
-              `${emojis.utility.false.raw} | **Error deleting this message...**\n\n${codeBlock(error)}`,
+              `${emojis.false} | **Error deleting this message...**\n\n${codeBlock(error)}`,
             )
             .setColor("Red"),
         ],

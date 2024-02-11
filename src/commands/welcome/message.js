@@ -4,7 +4,7 @@ const {
   PermissionFlagsBits,
   EmbedBuilder,
 } = require("discord.js");
-const { emojis } = require("../../utils");
+const { emojis, replaceAllMember } = require("../../utils");
 const { guilds } = require("../../mongo/index");
 
 /**
@@ -25,7 +25,7 @@ module.exports = async (client, interaction) => {
         iconURL: member.displayAvatarURL(),
       })
       .setDescription(
-        `${emojis.utility.false.raw} | **You don't have enough permissions to use this command.**`,
+        `${emojis.false} | **You don't have enough permissions to use this command.**`,
       )
       .setColor("Red")
       .setTimestamp();
@@ -40,10 +40,10 @@ module.exports = async (client, interaction) => {
         name: member.displayName,
         iconURL: member.displayAvatarURL(),
       })
-      .setDescription(`${emojis.utility.true.raw} | **Updated the message.**`)
+      .setDescription(`${emojis.true} | **Updated the message.**`)
       .addFields({
         name: "Preview:",
-        value: `${message.replaceAll("{member}", interaction.member).replaceAll("{new}", "\n").replaceAll("{guild.name}", interaction.guild.name)}`,
+        value: `${replaceAllMember(message, interaction.member)}`,
       })
       .setColor("Green")
       .setTimestamp();
@@ -55,7 +55,7 @@ module.exports = async (client, interaction) => {
         iconURL: member.displayAvatarURL(),
       })
       .setDescription(
-        `${emojis.utility.false.raw} | **This server does not have welcome module enabled, use /welcome enable**`,
+        `${emojis.false} | **This server does not have welcome module enabled, use /welcome enable**`,
       )
       .setColor("Orange")
       .setTimestamp();

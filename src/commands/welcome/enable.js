@@ -25,7 +25,7 @@ module.exports = async (client, interaction) => {
         iconURL: member.displayAvatarURL(),
       })
       .setDescription(
-        `${emojis.utility.false.raw} | **You don't have permissions to use this command.**`,
+        `${emojis.false} | **You don't have permissions to use this command.**`,
       )
       .setColor("Red")
       .setTimestamp();
@@ -35,7 +35,7 @@ module.exports = async (client, interaction) => {
   const embed = new EmbedBuilder()
     .setAuthor({ name: member.displayName, iconURL: member.displayAvatarURL() })
     .setDescription(
-      `${emojis.utility.true.raw} | **Enabled welcome module, i will now send a message in ${channel} when a member joins/leaves the server!**`,
+      `${emojis.true} | **Enabled welcome module, i will now send a message in ${channel} when a member joins/leaves the server!**`,
     )
     .setColor("Green")
     .setTimestamp();

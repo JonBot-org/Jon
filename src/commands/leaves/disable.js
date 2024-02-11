@@ -23,7 +23,7 @@ module.exports = async (client, interaction) => {
         iconURL: member.displayAvatarURL(),
       })
       .setDescription(
-        `${emojis.utility.false.raw} | **You don't have enough permissions to use this command.**`,
+        `${emojis.false} | **You don't have enough permissions to use this command.**`,
       )
       .setColor("Red")
       .setTimestamp();
@@ -43,7 +43,7 @@ module.exports = async (client, interaction) => {
     return interaction.editReply({
       embeds: [
         embed.setDescription(
-          `${emojis.utility.true.raw} | **Disabled leaves module.**`,
+          `${emojis.true} | **Disabled leaves module.**`,
         ),
       ],
     });
@@ -51,7 +51,7 @@ module.exports = async (client, interaction) => {
     return interaction.editReply({
       embeds: [
         embed.setDescription(
-          `${emojis.utility.false.raw} | **Leave module is already disabled**`,
+          `${emojis.false} | **Leave module is already disabled**`,
         ),
       ],
     });

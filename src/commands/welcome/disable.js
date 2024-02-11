@@ -23,7 +23,7 @@ module.exports = async (client, interaction) => {
         iconURL: member.displayAvatarURL(),
       })
       .setDescription(
-        `${emojis.utility.false.raw} | **You don't have enough permissions to use this command.**`,
+        `${emojis.false} | **You don't have enough permissions to use this command.**`,
       )
       .setColor("Red")
       .setTimestamp();
@@ -41,7 +41,7 @@ module.exports = async (client, interaction) => {
         iconURL: member.displayAvatarURL(),
       })
       .setDescription(
-        `${emojis.utility.true.raw} | **Disabled welcome module in this server.**`,
+        `${emojis.true} | **Disabled welcome module in this server.**`,
       )
       .setColor("Green")
       .setTimestamp();
@@ -53,7 +53,7 @@ module.exports = async (client, interaction) => {
         iconURL: member.displayAvatarURL(),
       })
       .setDescription(
-        `${emojis.utility.false.raw} | **Welcome module is already disabled**`,
+        `${emojis.false} | **Welcome module is already disabled**`,
       )
       .setColor("Orange")
       .setTimestamp();

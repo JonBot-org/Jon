@@ -1,6 +1,6 @@
 const { Events, GuildMember, EmbedBuilder } = require("discord.js");
 const { guilds } = require("../../mongo/index");
-const { emojis } = require("../../utils");
+const { emojis, replaceAllMember } = require("../../utils");
 
 module.exports = {
   name: Events.GuildMemberAdd,
@@ -12,20 +12,9 @@ module.exports = {
     const data = await guilds.findOne({ Id: member.guild.id });
 
     if (data && data.welcome.enabled) {
-      /**
-       * {member} = member mention
-       * {guild/guld.name} guild name
-       * {new} new line (\n)
-       * {count} member count in the guild
-       */
-
       const message = data.welcome.message
-        ? data.welcome.message
-            .replaceAll("{member}", member)
-            .replaceAll("{guild}", member.guild.name)
-            .replaceAll("{guild.name}", member.guild.name)
-            .replaceAll("{count}", member.guild.memberCount)
-            .replaceAll("{new}", "\n")
+        ? 
+        replaceAllMember(data.welcome.message, member)
         : `${member} just joined the server, say hello!\n- ${member.guild.name} now has ${member.guild.memberCount}`;
 
       const embed = new EmbedBuilder()

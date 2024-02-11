@@ -4,7 +4,7 @@ const {
   PermissionFlagsBits,
   EmbedBuilder,
 } = require("discord.js");
-const { emojis } = require("../../utils");
+const { emojis, replaceAllMember } = require("../../utils");
 
 /**
  *
@@ -24,7 +24,7 @@ module.exports = async (client, interaction) => {
         iconURL: member.displayAvatarURL(),
       })
       .setDescription(
-        `${emojis.utility.false.raw} | **You don't have enough permissions to use this command.**`,
+        `${emojis.false} | **You don't have enough permissions to use this command.**`,
       )
       .setColor("Red")
       .setTimestamp();
@@ -40,11 +40,11 @@ module.exports = async (client, interaction) => {
     await data.save();
     embed
       .setDescription(
-        `${emojis.utility.true.raw} | **Updated the leave message**`,
+        `${emojis.true} | **Updated the leave message**`,
       )
       .addFields({
         name: "Preview:",
-        value: `${message.replaceAll("{member}", interaction.member).replaceAll("{new}", "\n").replaceAll("{guild.name}", interaction.guild.name).replaceAll("{count}", interaction.guild.memberCount)}`,
+        value: `${replaceAllMember(message, interaction.member)}`,
       })
       .setColor("Green");
     return interaction.editReply({ embeds: [embed] });
@@ -53,7 +53,7 @@ module.exports = async (client, interaction) => {
       embeds: [
         embed
           .setDescription(
-            `${emojis.utility.false.raw} | **Leave module is not emabled in this server. Use /leave enable**`,
+            `${emojis.false} | **Leave module is not emabled in this server. Use /leave enable**`,
           )
           .setColor("Orange"),
       ],
