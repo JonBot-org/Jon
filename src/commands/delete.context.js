@@ -72,16 +72,18 @@ module.exports = {
             .setDescription(`${emojis.utility.true.raw} | **Done!**`)
             .setColor("Green"),
         ],
-        ephemeral: true
+        ephemeral: true,
       });
     } catch (error) {
       return interaction.reply({
         embeds: [
-          embed.setDescription(
-            `${emojis.utility.false.raw} | **Error deleting this message...**\n\n${codeBlock(error)}`,
-          ).setColor('Red')
+          embed
+            .setDescription(
+              `${emojis.utility.false.raw} | **Error deleting this message...**\n\n${codeBlock(error)}`,
+            )
+            .setColor("Red"),
         ],
-        ephemeral: true
+        ephemeral: true,
       });
     }
   },

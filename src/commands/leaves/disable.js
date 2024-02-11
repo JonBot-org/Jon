@@ -5,9 +5,8 @@ const {
   EmbedBuilder,
 } = require("discord.js");
 const { emojis } = require("../../utils");
-const { guilds } = require("../../mongo/index");
-
 /**
+ *
  * @param {Client} client
  * @param {ChatInputCommandInteraction} interaction
  */
@@ -15,8 +14,7 @@ module.exports = async (client, interaction) => {
   await interaction.deferReply();
 
   const member = await interaction.guild.members.fetch(interaction.user.id);
-  const channel = interaction.options.getChannel("channel", true);
-  const data = await guilds.findOne({ Id: interaction.guildId });
+  const data = await client.db.guilds.findOne({ Id: interaction.guildId });
 
   if (member && !member.permissions.has(PermissionFlagsBits.ManageGuild)) {
     const embed = new EmbedBuilder()
@@ -25,7 +23,7 @@ module.exports = async (client, interaction) => {
         iconURL: member.displayAvatarURL(),
       })
       .setDescription(
-        `${emojis.utility.false.raw} | **You don't have permissions to use this command.**`,
+        `${emojis.utility.false.raw} | **You don't have enough permissions to use this command.**`,
       )
       .setColor("Red")
       .setTimestamp();
@@ -34,25 +32,28 @@ module.exports = async (client, interaction) => {
 
   const embed = new EmbedBuilder()
     .setAuthor({ name: member.displayName, iconURL: member.displayAvatarURL() })
-    .setDescription(
-      `${emojis.utility.true.raw} | **Enabled welcome module, i will now send a message in ${channel} when a member joins/leaves the server!**`,
-    )
     .setColor("Green")
     .setTimestamp();
 
   if (data) {
-    data.welcome.enabled = true;
-    data.welcome.channel = channel.id;
+    data.leaves.enabled = false;
+    data.leaves.channel = null;
+    data.leaves.message = null;
     await data.save();
-    return interaction.editReply({ embeds: [embed] });
-  } else {
-    await guilds.create({
-      Id: interaction.guildId,
-      welcome: {
-        enabled: true,
-        channel: channel.id,
-      },
+    return interaction.editReply({
+      embeds: [
+        embed.setDescription(
+          `${emojis.utility.true.raw} | **Disabled leaves module.**`,
+        ),
+      ],
     });
-    return interaction.editReply({ embeds: [embed] });
+  } else {
+    return interaction.editReply({
+      embeds: [
+        embed.setDescription(
+          `${emojis.utility.false.raw} | **Leave module is already disabled**`,
+        ),
+      ],
+    });
   }
 };

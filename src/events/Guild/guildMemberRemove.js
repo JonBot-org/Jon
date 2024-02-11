@@ -1,43 +1,43 @@
 const { Events, GuildMember, EmbedBuilder } = require("discord.js");
 const { guilds } = require("../../mongo/index");
-const { emojis } = require("../../utils");
 
 module.exports = {
-  name: Events.GuildMemberAdd,
+  name: Events.GuildMemberRemove,
   type: "client",
   /**
+   *
    * @param {GuildMember} member
    */
   run: async (member) => {
     const data = await guilds.findOne({ Id: member.guild.id });
 
-    if (data && data.welcome.enabled) {
+    if (data && data.leaves.enabled) {
       /**
-       * {member} = member mention
-       * {guild/guld.name} guild name
-       * {new} new line (\n)
-       * {count} member count in the guild
+       * {member} = user username
+       * {guild/guild.name} = guild name
+       * {new} = new line (\n)
+       * {count} = guild member count
        */
 
-      const message = data.welcome.message
-        ? data.welcome.message
-            .replaceAll("{member}", member)
+      const message = data.leaves.message
+        ? data.leaves.message
+            .replaceAll("{member}", member.user.username)
             .replaceAll("{guild}", member.guild.name)
             .replaceAll("{guild.name}", member.guild.name)
-            .replaceAll("{count}", member.guild.memberCount)
             .replaceAll("{new}", "\n")
-        : `${member} just joined the server, say hello!\n- ${member.guild.name} now has ${member.guild.memberCount}`;
+            .replaceAll("{count}", member.guild.memberCount)
+        : `**${member.user.username}** just left the server ):\nWe now have **${member.guild.memberCount}**.`;
 
       const embed = new EmbedBuilder()
         .setAuthor({
-          name: member.displayName,
+          name: member.user.username,
           iconURL: member.displayAvatarURL(),
         })
         .setDescription(message)
-        .setColor("Green")
+        .setColor("Orange")
         .setTimestamp();
 
-      const channel = await member.guild.channels.fetch(data.welcome.channel);
+      const channel = await member.guild.channels.fetch(data.leaves.channel);
       if (channel && channel.isTextBased()) {
         channel.send({ embeds: [embed] });
       }

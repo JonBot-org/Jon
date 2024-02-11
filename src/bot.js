@@ -1,12 +1,18 @@
 require("dotenv").config();
-const { Client, GatewayIntentBits, Collection, Partials } = require("discord.js");
+const {
+  Client,
+  GatewayIntentBits,
+  Collection,
+  Partials,
+} = require("discord.js");
 const fs = require("node:fs");
 const chalk = require("chalk");
 const { default: mongoose } = require("mongoose");
+const db = require("./mongo/index");
 
 const client = new Client({
   intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers],
-  partials: [Partials.Channel]
+  partials: [Partials.Channel],
 });
 
 (() => {
@@ -72,6 +78,7 @@ const client = new Client({
 
 async function start() {
   try {
+    client.db = db;
     mongoose.connect(process.env.MONGO_DB).then((mongo) => {
       console.log(chalk.green("[MONGO] || Connected"));
     });
