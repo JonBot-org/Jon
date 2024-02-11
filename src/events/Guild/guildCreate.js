@@ -5,7 +5,8 @@ const {
   AuditLogEvent,
   WebhookClient,
 } = require("discord.js");
-const blockedIds = require("../../json/blockedGuildIds.json");
+const blacklist = require("../../json/blacklist.json");
+const whitelist = require('../../json/whitelist.json');
 const chalk = require("chalk");
 
 module.exports = {
@@ -17,9 +18,9 @@ module.exports = {
   run: async (guild) => {
     if (process.env.NODE_ENV === "development") return;
 
-    if (blockedIds.includes(guild.id)) return guild.leave();
+    if (blacklist.join.includes(guild.id)) return guild.leave();
 
-    if (guild.memberCount < 10) {
+    if (!whitelist["10_limit"].includes(guild.id) && guild.memberCount < 10) {
       const audit = await guild.fetchAuditLogs({
         type: AuditLogEvent.BotAdd,
         limit: 1,
