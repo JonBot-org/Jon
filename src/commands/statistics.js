@@ -28,7 +28,7 @@ module.exports = {
     );
 
     const members = interaction.client.guilds.cache.reduce(
-      (acc, guild) => acc + guild.memberCount,
+      (acc, guild) => acc + guild.memberCount, 0
     );
     const channels = interaction.client.channels.cache.size;
     const servers = interaction.client.guilds.cache.size;
