@@ -1,7 +1,5 @@
 const {
   ContextMenuCommandBuilder,
-  MessageContextMenuCommandInteraction,
-  PermissionFlagsBits,
   ApplicationCommandType,
   EmbedBuilder,
   codeBlock,

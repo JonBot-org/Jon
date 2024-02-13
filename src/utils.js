@@ -1,5 +1,3 @@
-const { GuildMember } = require("discord.js");
-
 module.exports = {
   emojis: {
     true: "<:u_t:1200466489703157831>",
@@ -15,9 +13,9 @@ module.exports = {
 
   /**
    * @param {String} message
-   * @param {GuildMember} member
+   * @param {import('discord.js').GuildMember} member
    */
-  replaceAllMemberDescriptipn: (message, member) => {
+  replaceAllMemberDescription: (message, member) => {
     return message
       .replaceAll("{guild.name}", member.guild.name)
       .replaceAll("{guild.memberCount}", member.guild.memberCount)

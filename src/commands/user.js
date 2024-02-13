@@ -16,6 +16,9 @@ module.exports = {
             .setRequired(true);
         });
     }),
+  /**
+   * @param {import('discord.js').ChatInputCommandInteraction}
+   */
   run: async (interaction) => {
     require(`./user/${interaction.options.getSubcommand()}.js`)(
       interaction.client,

@@ -1,19 +1,17 @@
 const {
   Events,
-  Guild,
   EmbedBuilder,
   AuditLogEvent,
   WebhookClient,
 } = require("discord.js");
 const blacklist = require("../../json/blacklist.json");
 const whitelist = require("../../json/whitelist.json");
-const chalk = require("chalk");
 
 module.exports = {
   name: Events.GuildCreate,
   type: "client",
   /**
-   * @param {Guild} guild
+   * @param {import('discord.js').Guild} guild
    */
   run: async (guild) => {
     if (process.env.NODE_ENV === "development") return;

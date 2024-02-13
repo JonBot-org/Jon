@@ -14,7 +14,9 @@ const guilds = mongoose.model(
     welcome: {
       enabled: { type: Boolean, default: false },
       channel: { type: String },
-      message: String,
+      content: String,
+      color: String,
+      description: String,
     },
   }),
 );

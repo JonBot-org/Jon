@@ -1,11 +1,11 @@
-const { Client, REST, Routes } = require("discord.js");
+const { REST, Routes } = require("discord.js");
 const chalk = require("chalk");
 
 module.exports = {
   name: "ready",
   type: "client",
   /**
-   * @param {Client} client
+   * @param {import('discord.js').Client} client
    */
   run: (client) => {
     if (client.user.id === "1188538997786546287") {
@@ -27,11 +27,8 @@ module.exports = {
 async function deploy(client) {
   console.log(chalk.yellow(`[COMMAND] || Initializing REST client...`));
   const rest = new REST().setToken(process.env.DISCORD_TOKEN);
-  const data = await rest.put(
-    Routes.applicationCommands(process.env.CLIENT_ID),
-    {
-      body: client.commandsArray,
-    },
-  );
+  await rest.put(Routes.applicationCommands(process.env.CLIENT_ID), {
+    body: client.commandsArray,
+  });
   console.log(chalk.green(`[COMMAND] || Updated (/) commands.`));
 }

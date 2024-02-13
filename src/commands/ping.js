@@ -1,6 +1,5 @@
 const {
   SlashCommandBuilder,
-  ChatInputCommandInteraction,
   EmbedBuilder,
   ActionRowBuilder,
   ButtonBuilder,

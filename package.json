@@ -6,7 +6,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node .",
-    "test": "node metadata.jon.js"
+    "test": "echo no"
   },
   "author": "Rayaan",
   "license": "ISC",
@@ -16,5 +16,9 @@
     "dotenv": "^16.4.1",
     "moment": "^2.30.1",
     "mongoose": "^8.1.1"
+  },
+  "devDependencies": {
+    "eslint": "^8.56.0",
+    "eslint-plugin-react": "^7.33.2"
   }
 }

@@ -1,9 +1,4 @@
-const {
-  Client,
-  ChatInputCommandInteraction,
-  PermissionFlagsBits,
-  EmbedBuilder,
-} = require("discord.js");
+const { PermissionFlagsBits, EmbedBuilder } = require("discord.js");
 const { emojify } = require("../../utils");
 /**
  *

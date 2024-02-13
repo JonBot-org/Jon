@@ -1,15 +1,10 @@
-const {
-  Client,
-  ChatInputCommandInteraction,
-  PermissionFlagsBits,
-  EmbedBuilder,
-} = require("discord.js");
+const { PermissionFlagsBits, EmbedBuilder, ComponentType, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
 const { emojify, replaceAllMemberDescriptipn } = require("../../utils");
 
 /**
  *
- * @param {Client} client
- * @param {ChatInputCommandInteraction} interaction
+ * @param {import('discord.js').Client} client
+ * @param {import('discord.js').ChatInputCommandInteraction} interaction
  */
 module.exports = async (client, interaction) => {
   await interaction.deferReply();
@@ -40,10 +35,36 @@ module.exports = async (client, interaction) => {
   if (data && data.leaves.enabled) {
     data.leaves.message = message;
     await data.save();
+
+    const row = new ActionRowBuilder()
+    .addComponents(
+      new ButtonBuilder()
+      .setCustomId('collector-leaves.test')
+      .setLabel('Test')
+      .setStyle(ButtonStyle.Primary)
+    )
+
     embed
-      .setDescription(`${emojify(true)} | **Updated the leave message**`)
+      .setDescription(`${emojify(true)} | **Updated the leave message.**\n- **To view the updated message click the "Test" button.**`)
       .setColor("DarkPurple");
-    return interaction.editReply({ embeds: [embed] });
+
+    interaction.editReply({ embeds: [embed], components: [row] });
+
+    const collector = await interaction.channel.createMessageComponentCollector({
+      filter: (i) => i.user.id == interaction.user.id,
+      componentType: ComponentType.Button
+    });
+
+    collector.on('collect', (int) => {
+      const embed = new EmbedBuilder()
+      .setAuthor({ name: member.user.username, iconURL: member.user.displayAvatarURL() })
+      .setDescription(replaceAllMemberDescriptipn(message, member))
+      .setColor('Random')
+      .setTimestamp();
+
+      int.update({ embeds: [embed], components: [] });
+      return collector.stop();
+    });
   } else {
     return interaction.editReply({
       embeds: [

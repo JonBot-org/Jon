@@ -68,9 +68,7 @@ const client = new Client({
       client.commandsArray.push(command.data.toJSON());
     } else {
       console.log(
-        chalk.red(
-          `[COMMAND] || ${folder}/${file} : command#data is not present.`,
-        ),
+        chalk.red(`[COMMAND] || ${file} : command#data is not present.`),
       );
     }
   }
@@ -79,7 +77,7 @@ const client = new Client({
 async function start() {
   try {
     client.db = db;
-    mongoose.connect(process.env.MONGO_DB).then((mongo) => {
+    mongoose.connect(process.env.MONGO_DB).then(() => {
       console.log(chalk.green("[MONGO] || Connected"));
     });
     await client.login();

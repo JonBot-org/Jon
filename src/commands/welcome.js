@@ -1,8 +1,4 @@
-const {
-  SlashCommandBuilder,
-  ChannelType,
-  ChatInputCommandInteraction,
-} = require("discord.js");
+const { SlashCommandBuilder, ChannelType } = require("discord.js");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -28,14 +24,23 @@ module.exports = {
     })
     .addSubcommand((command) => {
       return command
-        .setName("message")
-        .setDescription("Edit the message that gets sent when a member joins")
+        .setName("edit")
+        .setDescription("Edit the message that gets sent when a member joins.")
         .addStringOption((option) =>
           option
-            .setName("message")
-            .setDescription(`The message to display on the embed`)
-            .setRequired(true),
-        );
+            .setName("content")
+            .setDescription(`The content to display, if any.`)
+        )
+        .addStringOption((option) => {
+          return option
+          .setName('description')
+          .setDescription('The description of the embed, if any.')
+        })
+        .addStringOption((option) => {
+          return option
+          .setName('color')
+          .setDescription('Edit the color of the embed, default is Random')
+        })
     }),
   /**
    * @param {ChatInputCommandInteraction} interaction

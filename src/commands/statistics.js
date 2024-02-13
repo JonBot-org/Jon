@@ -1,6 +1,5 @@
 const {
   SlashCommandBuilder,
-  ChatInputCommandInteraction,
   EmbedBuilder,
   ActionRowBuilder,
   ButtonBuilder,
@@ -8,7 +7,6 @@ const {
   ComponentType,
   codeBlock,
 } = require("discord.js");
-const os = require("node:os");
 const { version, dependencies } = require("../../package.json");
 
 module.exports = {

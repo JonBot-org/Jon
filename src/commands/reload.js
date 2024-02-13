@@ -1,8 +1,5 @@
 const chalk = require("chalk");
-const {
-  SlashCommandBuilder,
-  ChatInputCommandInteraction,
-} = require("discord.js");
+const { SlashCommandBuilder } = require("discord.js");
 
 module.exports = {
   devOnly: true,

@@ -1,21 +1,21 @@
-const { Events, GuildMember, EmbedBuilder } = require("discord.js");
+const { Events, EmbedBuilder } = require("discord.js");
 const { guilds } = require("../../mongo/index");
-const { replaceAllMember } = require("../../utils");
+const { replaceAllMemberDescriptipn } = require("../../utils");
 
 module.exports = {
   name: Events.GuildMemberRemove,
   type: "client",
   /**
    *
-   * @param {GuildMember} member
+   * @param {import('discord.js').GuildMember} member
    */
   run: async (member) => {
     const data = await guilds.findOne({ Id: member.guild.id });
 
     if (data && data.leaves.enabled) {
       const message = data.leaves.message
-        ? replaceAllMember(data.leaves.message, member)
-        : `**${member.user.username}** just left the server ):\nWe now have **${member.guild.memberCount}**.`;
+        ? replaceAllMemberDescriptipn(data.leaves.message, member)
+        : `**${member.user.username}** just left the server.\nWe now have **${member.guild.memberCount}** members.`;
 
       const embed = new EmbedBuilder()
         .setAuthor({
