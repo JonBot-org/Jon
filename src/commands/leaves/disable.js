@@ -4,7 +4,7 @@ const {
   PermissionFlagsBits,
   EmbedBuilder,
 } = require("discord.js");
-const { emojis } = require("../../utils");
+const { emojify } = require("../../utils");
 /**
  *
  * @param {Client} client
@@ -15,43 +15,36 @@ module.exports = async (client, interaction) => {
 
   const member = await interaction.guild.members.fetch(interaction.user.id);
   const data = await client.db.guilds.findOne({ Id: interaction.guildId });
+  const embed = new EmbedBuilder()
+    .setAuthor({ name: member.displayName, iconURL: member.displayAvatarURL() })
+    .setTimestamp();
 
   if (member && !member.permissions.has(PermissionFlagsBits.ManageGuild)) {
-    const embed = new EmbedBuilder()
-      .setAuthor({
-        name: member.displayName,
-        iconURL: member.displayAvatarURL(),
-      })
+    embed
       .setDescription(
-        `${emojis.false} | **You don't have enough permissions to use this command.**`,
+        `${emojify(false)} | **You don't have enough permissions to use this command.**`,
       )
-      .setColor("Red")
-      .setTimestamp();
+      .setColor("Red");
     return interaction.editReply({ embeds: [embed] });
   }
 
-  const embed = new EmbedBuilder()
-    .setAuthor({ name: member.displayName, iconURL: member.displayAvatarURL() })
-    .setColor("Green")
-    .setTimestamp();
+  embed.setColor("DarkPurple");
 
-  if (data) {
+  if (data && data.leaves.enabled) {
     data.leaves.enabled = false;
     data.leaves.channel = null;
     data.leaves.message = null;
     await data.save();
     return interaction.editReply({
       embeds: [
-        embed.setDescription(
-          `${emojis.true} | **Disabled leaves module.**`,
-        ),
+        embed.setDescription(`${emojify(true)} | **Disabled leaves module.**`),
       ],
     });
   } else {
     return interaction.editReply({
       embeds: [
         embed.setDescription(
-          `${emojis.false} | **Leave module is already disabled**`,
+          `${emojify(false)} | **Leave module is already disabled**`,
         ),
       ],
     });

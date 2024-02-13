@@ -28,7 +28,7 @@ module.exports = {
       .setDescription(
         `<:u_n_s:1205129118925070398> | **Ping:** \`${interaction.client.ws.ping}ms\``,
       )
-      .setColor("Green")
+      .setColor("DarkVividPink")
       .setTimestamp();
 
     let response = { embeds: [embed] };

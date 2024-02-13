@@ -6,7 +6,7 @@ const {
   WebhookClient,
 } = require("discord.js");
 const blacklist = require("../../json/blacklist.json");
-const whitelist = require('../../json/whitelist.json');
+const whitelist = require("../../json/whitelist.json");
 const chalk = require("chalk");
 
 module.exports = {

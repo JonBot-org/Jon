@@ -28,7 +28,8 @@ module.exports = {
     );
 
     const members = interaction.client.guilds.cache.reduce(
-      (acc, guild) => acc + guild.memberCount, 0
+      (acc, guild) => acc + guild.memberCount,
+      0,
     );
     const channels = interaction.client.channels.cache.size;
     const servers = interaction.client.guilds.cache.size;
@@ -42,7 +43,7 @@ module.exports = {
       .setDescription(
         `> **Statistics**\nPing: ${ping}\nServers: ${servers}\nMembers: ${members}\nChannels: ${channels}`,
       )
-      .setColor("Green")
+      .setColor("DarkPurple")
       .setTimestamp();
 
     interaction.reply({ embeds: [embed], components: [row], ephemeral: true });
@@ -64,7 +65,7 @@ module.exports = {
           iconURL: embed.data.author.icon_url,
         })
         .setDescription(`${newInformation}`)
-        .setColor("Random")
+        .setColor("DarkVividPink")
         .setTimestamp();
 
       i.update({ embeds: [newEmbed], components: [] });

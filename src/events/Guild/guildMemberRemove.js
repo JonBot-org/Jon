@@ -1,6 +1,6 @@
 const { Events, GuildMember, EmbedBuilder } = require("discord.js");
 const { guilds } = require("../../mongo/index");
-const { replaceAllMember } = require('../../utils')
+const { replaceAllMember } = require("../../utils");
 
 module.exports = {
   name: Events.GuildMemberRemove,
@@ -14,8 +14,7 @@ module.exports = {
 
     if (data && data.leaves.enabled) {
       const message = data.leaves.message
-        ? 
-        replaceAllMember(data.leaves.message, member)
+        ? replaceAllMember(data.leaves.message, member)
         : `**${member.user.username}** just left the server ):\nWe now have **${member.guild.memberCount}**.`;
 
       const embed = new EmbedBuilder()

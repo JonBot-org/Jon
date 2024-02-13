@@ -18,7 +18,7 @@ module.exports = {
         iconURL: interaction.user.displayAvatarURL(),
       })
       .setDescription(`**Uptime:** ${uptimeString(interaction.client)}`)
-      .setColor("Green")
+      .setColor("DarkPurple")
       .setTimestamp();
 
     interaction.reply({ embeds: [embed] });

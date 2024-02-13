@@ -6,7 +6,7 @@ const {
   EmbedBuilder,
   codeBlock,
 } = require("discord.js");
-const { emojis } = require("../utils");
+const { emojify } = require("../utils");
 
 module.exports = {
   data: new ContextMenuCommandBuilder()
@@ -28,7 +28,9 @@ module.exports = {
         embeds: [
           embed
             .setDescription(
-              `${emojis.false} | **I can't delete this message, this message does not belong to me.**`,
+              `${emojify(
+                false,
+              )} | **I can't delete this message, this message does not belong to me.**`,
             )
             .setColor("Orange"),
         ],
@@ -41,7 +43,9 @@ module.exports = {
         embeds: [
           embed
             .setDescription(
-              `${emojis.false} | **This message is not a interaction command, i can't delete this.**`,
+              `${emojify(
+                false,
+              )} | **This message is not a interaction command, i can't delete this.**`,
             )
             .setColor("Orange"),
         ],
@@ -56,7 +60,9 @@ module.exports = {
         embeds: [
           embed
             .setDescription(
-              `${emojis.false} | **You did not use this interaction command.**`,
+              `${emojify(
+                false,
+              )} | **You did not use this interaction command.**`,
             )
             .setColor("Orange"),
         ],
@@ -69,7 +75,7 @@ module.exports = {
       return interaction.reply({
         embeds: [
           embed
-            .setDescription(`${emojis.true} | **Done!**`)
+            .setDescription(`${emojify(true)} | **Done!**`)
             .setColor("Green"),
         ],
         ephemeral: true,
@@ -79,7 +85,9 @@ module.exports = {
         embeds: [
           embed
             .setDescription(
-              `${emojis.false} | **Error deleting this message...**\n\n${codeBlock(error)}`,
+              `${emojify(
+                false,
+              )} | **Error deleting this message...**\n\n${codeBlock(error)}`,
             )
             .setColor("Red"),
         ],

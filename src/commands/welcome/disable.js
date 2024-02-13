@@ -4,7 +4,7 @@ const {
   PermissionFlagsBits,
   EmbedBuilder,
 } = require("discord.js");
-const { emojis } = require("../../utils");
+const { emojify } = require("../../utils");
 const { guilds } = require("../../mongo/index");
 
 /**
@@ -15,18 +15,16 @@ module.exports = async (client, interaction) => {
   await interaction.deferReply();
   const member = await interaction.guild.members.fetch(interaction.user.id);
   const data = await guilds.findOne({ Id: interaction.guildId });
+  const embed = new EmbedBuilder()
+    .setAuthor({ name: member.displayName, iconURL: member.displayAvatarURL() })
+    .setTimestamp();
 
   if (member && !member.permissions.has(PermissionFlagsBits.ManageGuild)) {
-    const embed = new EmbedBuilder()
-      .setAuthor({
-        name: member.displayName,
-        iconURL: member.displayAvatarURL(),
-      })
+    embed
       .setDescription(
-        `${emojis.false} | **You don't have enough permissions to use this command.**`,
+        `${emojify(false)} | **You don't have enough permissions to use this command.**`,
       )
-      .setColor("Red")
-      .setTimestamp();
+      .setColor("Red");
     return interaction.editReply({ embeds: [embed] });
   }
 
@@ -35,28 +33,18 @@ module.exports = async (client, interaction) => {
     data.welcome.channel = null;
     data.welcome.message = null;
     await data.save();
-    const embed = new EmbedBuilder()
-      .setAuthor({
-        name: member.displayName,
-        iconURL: member.displayAvatarURL(),
-      })
+    embed
       .setDescription(
-        `${emojis.true} | **Disabled welcome module in this server.**`,
+        `${emojify(true)} | **Disabled welcome module in this server.**`,
       )
-      .setColor("Green")
-      .setTimestamp();
+      .setColor("Green");
     return interaction.editReply({ embeds: [embed] });
   } else {
-    const embed = new EmbedBuilder()
-      .setAuthor({
-        name: member.displayName,
-        iconURL: member.displayAvatarURL(),
-      })
+    embed
       .setDescription(
-        `${emojis.false} | **Welcome module is already disabled**`,
+        `${emojify(false)} | **Welcome module is already disabled, use /welcome enable to enable.**`,
       )
-      .setColor("Orange")
-      .setTimestamp();
+      .setColor("Orange");
     return interaction.editReply({ embeds: [embed] });
   }
 };

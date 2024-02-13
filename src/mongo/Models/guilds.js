@@ -8,19 +8,13 @@ const guilds = mongoose.model(
     leaves: {
       enabled: { type: Boolean, default: false },
       channel: { type: String },
-      message: {
-        type: String,
-        default: `{member} left the server {new}- {guild.name} now has {count}`,
-      },
+      message: String,
     },
 
     welcome: {
       enabled: { type: Boolean, default: false },
       channel: { type: String },
-      message: {
-        type: String,
-        default: "**{member}, Welcome to {guild.name}**",
-      },
+      message: String,
     },
   }),
 );

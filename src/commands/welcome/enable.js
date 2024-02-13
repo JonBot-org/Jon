@@ -4,7 +4,7 @@ const {
   PermissionFlagsBits,
   EmbedBuilder,
 } = require("discord.js");
-const { emojis } = require("../../utils");
+const { emojify } = require("../../utils");
 const { guilds } = require("../../mongo/index");
 
 /**
@@ -17,35 +17,26 @@ module.exports = async (client, interaction) => {
   const member = await interaction.guild.members.fetch(interaction.user.id);
   const channel = interaction.options.getChannel("channel", true);
   const data = await guilds.findOne({ Id: interaction.guildId });
+  const embed = new EmbedBuilder()
+    .setAuthor({ name: member.displayName, iconURL: member.displayAvatarURL() })
+    .setTimestamp();
 
   if (member && !member.permissions.has(PermissionFlagsBits.ManageGuild)) {
-    const embed = new EmbedBuilder()
-      .setAuthor({
-        name: member.displayName,
-        iconURL: member.displayAvatarURL(),
-      })
+    embed
       .setDescription(
-        `${emojis.false} | **You don't have permissions to use this command.**`,
+        `${emojify(false)} | **You don't have permissions to use this command.**`,
       )
-      .setColor("Red")
-      .setTimestamp();
+      .setColor("Red");
     return interaction.editReply({ embeds: [embed] });
   }
 
-  const embed = new EmbedBuilder()
-    .setAuthor({ name: member.displayName, iconURL: member.displayAvatarURL() })
+  embed
     .setDescription(
-      `${emojis.true} | **Enabled welcome module, i will now send a message in ${channel} when a member joins/leaves the server!**`,
+      `${emojify(true)} | **Enabled welcome module.**\n- **Channel:** ${channel}`,
     )
-    .setColor("Green")
-    .setTimestamp();
+    .setColor("DarkPurple");
 
-  if (data) {
-    data.welcome.enabled = true;
-    data.welcome.channel = channel.id;
-    await data.save();
-    return interaction.editReply({ embeds: [embed] });
-  } else {
+  if (!data) {
     await guilds.create({
       Id: interaction.guildId,
       welcome: {
@@ -53,6 +44,12 @@ module.exports = async (client, interaction) => {
         channel: channel.id,
       },
     });
+
     return interaction.editReply({ embeds: [embed] });
   }
+
+  data.welcome.enabled = true;
+  data.welcome.channel = channel.id;
+  await data.save();
+  return interaction.editReply({ embeds: [embed] });
 };

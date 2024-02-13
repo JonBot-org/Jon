@@ -29,13 +29,11 @@ module.exports = {
     .addSubcommand((command) => {
       return command
         .setName("message")
-        .setDescription("Edit the message that gets sent")
+        .setDescription("Edit the message that gets sent when a member joins")
         .addStringOption((option) =>
           option
             .setName("message")
-            .setDescription(
-              `The message to display on the embed, "0" = default`,
-            )
+            .setDescription(`The message to display on the embed`)
             .setRequired(true),
         );
     }),

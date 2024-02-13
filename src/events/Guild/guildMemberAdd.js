@@ -13,8 +13,7 @@ module.exports = {
 
     if (data && data.welcome.enabled) {
       const message = data.welcome.message
-        ? 
-        replaceAllMember(data.welcome.message, member)
+        ? replaceAllMember(data.welcome.message, member)
         : `${member} just joined the server, say hello!\n- ${member.guild.name} now has ${member.guild.memberCount}`;
 
       const embed = new EmbedBuilder()

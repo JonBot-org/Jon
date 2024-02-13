@@ -4,7 +4,7 @@ const {
   PermissionFlagsBits,
   EmbedBuilder,
 } = require("discord.js");
-const { emojis } = require("../../utils");
+const { emojify } = require("../../utils");
 
 /**
  *
@@ -16,42 +16,39 @@ module.exports = async (client, interaction) => {
   const channel = interaction.options.getChannel("channel", true);
   const member = await interaction.guild.members.fetch(interaction.user.id);
   const data = await client.db.guilds.findOne({ Id: interaction.guildId });
+  const embed = new EmbedBuilder()
+    .setAuthor({ name: member.displayName, iconURL: member.displayAvatarURL() })
+    .setTimestamp();
 
   if (member && !member.permissions.has(PermissionFlagsBits.ManageGuild)) {
-    const embed = new EmbedBuilder()
-      .setAuthor({
-        name: member.displayName,
-        iconURL: member.displayAvatarURL(),
-      })
+    embed
       .setDescription(
-        `${emojis.false} | **You don't have enough permissions to use this command**`,
+        `${emojify(false)} | **You don't have enough permissions to use this command**`,
       )
-      .setColor("Red")
-      .setTimestamp();
+      .setColor("Red");
     return interaction.editReply({ embeds: [embed] });
   }
 
-  const embed = new EmbedBuilder()
-    .setAuthor({ name: member.displayName, iconURL: member.displayAvatarURL() })
+  embed
     .setDescription(
-      `${emojis.true} | **Enabled leaves module, i will send a message in ${channel} when a member leaves.**`,
+      `${emojify(true)} | **Enabled leaves module**\n- **Channel: ${channel}**`,
     )
-    .setColor("Green")
-    .setTimestamp();
+    .setColor("DarkPurple");
 
-  if (data) {
-    data.leaves.enabled = true;
-    data.leaves.channel = channel.id;
-    await data.save();
-  } else {
-    data.create({
+  if (!data) {
+    await client.db.guilds.create({
       Id: interaction.guildId,
       leaves: {
         enabled: true,
         channel: channel.id,
       },
     });
+    return interaction.editReply({ embeds: [embed] });
   }
+
+  data.leaves.enabled = true;
+  data.leaves.channel = channel.id;
+  await data.save();
 
   return interaction.editReply({ embeds: [embed] });
 };

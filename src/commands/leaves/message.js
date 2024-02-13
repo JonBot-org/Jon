@@ -4,7 +4,7 @@ const {
   PermissionFlagsBits,
   EmbedBuilder,
 } = require("discord.js");
-const { emojis, replaceAllMember } = require("../../utils");
+const { emojify, replaceAllMemberDescriptipn } = require("../../utils");
 
 /**
  *
@@ -24,7 +24,9 @@ module.exports = async (client, interaction) => {
         iconURL: member.displayAvatarURL(),
       })
       .setDescription(
-        `${emojis.false} | **You don't have enough permissions to use this command.**`,
+        `${emojify(
+          false,
+        )} | **You don't have enough permissions to use this command.**`,
       )
       .setColor("Red")
       .setTimestamp();
@@ -39,21 +41,17 @@ module.exports = async (client, interaction) => {
     data.leaves.message = message;
     await data.save();
     embed
-      .setDescription(
-        `${emojis.true} | **Updated the leave message**`,
-      )
-      .addFields({
-        name: "Preview:",
-        value: `${replaceAllMember(message, interaction.member)}`,
-      })
-      .setColor("Green");
+      .setDescription(`${emojify(true)} | **Updated the leave message**`)
+      .setColor("DarkPurple");
     return interaction.editReply({ embeds: [embed] });
   } else {
     return interaction.editReply({
       embeds: [
         embed
           .setDescription(
-            `${emojis.false} | **Leave module is not emabled in this server. Use /leave enable**`,
+            `${emojify(
+              false,
+            )} | **Leave module is not emabled in this server. Use /leave enable**`,
           )
           .setColor("Orange"),
       ],
