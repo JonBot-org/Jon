@@ -71,6 +71,6 @@ module.exports = async (client, interaction) => {
             return collector.stop();
         });
     } else {
-        return interaction.editReply({ embeds: [embed.setDescription(`${emojify(false)} | **Welcome module is disabled in this server.**\n- **/welcome enable** : To enable the mofule`).setColor('DarkPurple')] })
+        return interaction.editReply({ embeds: [embed.setDescription(`${emojify(false)} | **Welcome module is disabled in this server.**\n- **/welcome enable** : To enable the module`).setColor('DarkPurple')] })
     }
 }

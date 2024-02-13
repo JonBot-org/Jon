@@ -55,13 +55,13 @@ module.exports = async (client, interaction) => {
             data.welcome.channel = op.channel.id
             await data.save();
         } else {
-            await new db.guilds.create({
+            await db.guilds.create({
                 Id: guild.id,
                 welcome: {
                     enabled: true,
                     channel: op.channel.id
                 }
-            }).save();
+            });
         }
 
         int.editReply({ embeds: [embed.setDescription(`${emojify(true)} | **Welcome module is now enabled.**\n- **Channel: ${op.channel}**`).setColor('DarkPurple')], components: [] });

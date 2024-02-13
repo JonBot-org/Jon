@@ -14,9 +14,9 @@ const guilds = mongoose.model(
     welcome: {
       enabled: { type: Boolean, default: false },
       channel: { type: String },
-      content: String,
+      content: { type: String, default: "{member}, Welcome to **{guild.name}**" },
       color: String,
-      description: String,
+      description: { type: String, default: "{guild.name} now has **{guild.memberCount}** members." }
     },
   }),
 );

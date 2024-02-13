@@ -1,34 +1,37 @@
 const { Events, EmbedBuilder } = require("discord.js");
-const { guilds } = require("../../mongo/index");
-const { replaceAllMemberDescriptipn } = require("../../utils");
+const db = require('../../mongo/index');
+const { replaceAllMemberDescription } = require('../../utils')
 
 module.exports = {
-  name: Events.GuildMemberAdd,
-  type: "client",
-  /**
-   * @param {import('discord.js').GuildMember} member
-   */
-  run: async (member) => {
-    const data = await guilds.findOne({ Id: member.guild.id });
+    name: Events.GuildMemberAdd,
+    type: 'client',
+    /**
+     * @param {import('discord.js').GuildMember}
+     */
+    run: async (member) => {
+        await member.fetch();
+        const { guild } = member;
+        const data = await db.guilds.findOne({ Id: guild.id });
+        const embed = new EmbedBuilder()
+        .setAuthor({ name: member.user.username, iconURL: member.displayAvatarURL() })
+        .setTimestamp()
+        .setColor((data) ? data.welcome.color ? data.welcome.color : 'Random' : 'Random');
 
-    if (data && data.welcome.enabled) {
-      const message = data.welcome.message
-        ? replaceAllMemberDescriptipn(data.welcome.message, member)
-        : `${member} just joined the server, say hello!\n- ${member.guild.name} now has ${member.guild.memberCount}`;
+        if (data && data.welcome.enabled) {
+            let messageObject = {};
+            if (data.welcome.content && data.welcome.description) {
+                messageObject = { content: replaceAllMemberDescription(data.welcome.content, member), embeds: [embed.setDescription(replaceAllMemberDescription(data.welcome.description, member))] };
+            } else if (!data.welcome.content && data.welcome.description) {
+                messageObject = { embeds: [embed.setDescription(replaceAllMemberDescription(data.welcome.description, member))] };
+            } else if (data.welcome.content && !data.welcome.description) {
+                messageObject = { content: replaceAllMemberDescription(data.welcome.content, member) };
+            }
 
-      const embed = new EmbedBuilder()
-        .setAuthor({
-          name: member.displayName,
-          iconURL: member.displayAvatarURL(),
-        })
-        .setDescription(message)
-        .setColor("Random")
-        .setTimestamp();
+            const channel = await guild.channels.fetch(data.welcome.channel);
+            if (channel) {
+                channel.send(messageObject);
+            }
+        }
 
-      const channel = await member.guild.channels.fetch(data.welcome.channel);
-      if (channel && channel.isTextBased()) {
-        channel.send({ embeds: [embed] });
-      }
     }
-  },
-};
+}
