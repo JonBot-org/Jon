@@ -64,6 +64,6 @@ module.exports = async (client, interaction) => {
             });
         }
 
-        return int.editReply({ embeds: [embed.setDescription(`${emojify(true)} | **Leave module is now emabled**\n- **Channel: ${op.channel}**`).setColor('DarkPurple')], components: [] });
+        return int.editReply({ embeds: [embed.setDescription(`${emojify(true)} | **Leave module is now enable**\n- **Channel: ${op.channel}**`).setColor('DarkPurple')], components: [] });
     });
 }

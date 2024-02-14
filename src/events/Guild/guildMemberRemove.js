@@ -9,7 +9,6 @@ module.exports = {
      * @param {import('discord.js').GuildMember} member
      */
     run: async (member) => {
-        await member.fetch();
         const { guild } = member;
         const data = await db.guilds.findOne({ Id: guild.id });
         const embed = new EmbedBuilder()
