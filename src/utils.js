@@ -1,4 +1,4 @@
-const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
 
 module.exports = {
   emojis: {
@@ -34,11 +34,13 @@ module.exports = {
    */
   createDisabledButton(label) {
     return new ActionRowBuilder()
-    .addComponents(
-      new ButtonBuilder()
-      .setLabel(label)
-      .setDisabled(true).setStyle(ButtonStyle.Danger)
-      .setCustomId('disabled')
-    ).toJSON();
-  }
+      .addComponents(
+        new ButtonBuilder()
+          .setLabel(label)
+          .setDisabled(true)
+          .setStyle(ButtonStyle.Danger)
+          .setCustomId("disabled"),
+      )
+      .toJSON();
+  },
 };
