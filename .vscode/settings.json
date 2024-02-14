@@ -1,18 +1,14 @@
 {
-  "eslint.enable": true,
-  "eslint.codeAction.disableRuleComment": {
-    "enable": true,
-    "location": "separateLine",
-    "commentStyle": "line"
-  },
-  "eslint.format.enable": true,
-  "eslint.codeActionsOnSave.mode": "all",
-  "eslint.run": "onSave",
-  "prettier.enable": true,
-  "editor.formatOnSave": true,
   "editor.minimap.enabled": false,
-  "editor.cursorStyle": "line-thin",
-  "editor.fontFamily": "Menlo, Monaco, 'Courier New', monospace",
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "editor.suggest.showWords": false
+  "editor.defaultFoldingRangeProvider": "esbenp.prettier-vscode",
+  "editor.suggest.showValues": true,
+  "editor.suggest.showWords": false,
+  "[javascript]": {
+    "editor.defaultFoldingRangeProvider": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.fixAll": "explicit",
+      "source.organizeImports": "explicit"
+    }
+  }
 }

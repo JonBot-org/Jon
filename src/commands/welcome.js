@@ -29,18 +29,18 @@ module.exports = {
         .addStringOption((option) =>
           option
             .setName("content")
-            .setDescription(`The content to display, if any.`)
+            .setDescription(`The content to display, if any.`),
         )
         .addStringOption((option) => {
           return option
-          .setName('description')
-          .setDescription('The description of the embed, if any.')
+            .setName("description")
+            .setDescription("The description of the embed, if any.");
         })
         .addStringOption((option) => {
           return option
-          .setName('color')
-          .setDescription('Edit the color of the embed, default is Random')
-        })
+            .setName("color")
+            .setDescription("Edit the color of the embed, default is Random");
+        });
     }),
   /**
    * @param {ChatInputCommandInteraction} interaction
