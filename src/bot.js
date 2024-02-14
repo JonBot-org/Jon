@@ -11,8 +11,8 @@ const { default: mongoose } = require("mongoose");
 const db = require("./mongo/index");
 
 const client = new Client({
-  intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers],
-  partials: [Partials.Channel],
+  intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers, GatewayIntentBits.DirectMessages],
+  partials: [Partials.Channel, Partials.User],
 });
 
 (() => {

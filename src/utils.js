@@ -1,3 +1,5 @@
+const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+
 module.exports = {
   emojis: {
     true: "<:u_t:1200466489703157831>",
@@ -25,4 +27,18 @@ module.exports = {
       .replaceAll("{n}", "\n")
       .replaceAll("{new}", "\n");
   },
+
+  /**
+   * @param {string} label
+   * @returns {}
+   */
+  createDisabledButton(label) {
+    return new ActionRowBuilder()
+    .addComponents(
+      new ButtonBuilder()
+      .setLabel(label)
+      .setDisabled(true).setStyle(ButtonStyle.Danger)
+      .setCustomId('disabled')
+    ).toJSON();
+  }
 };

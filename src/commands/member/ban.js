@@ -1,5 +1,5 @@
 const { PermissionFlagsBits, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, ComponentType } = require('discord.js');
-const { emojify } = require('../../utils');
+const { emojify, createDisabledButton } = require('../../utils');
 
 /**
  * @param {import('discord.js').Client} client
@@ -20,7 +20,7 @@ module.exports = async (client, interaction) => {
     interaction.editReply({ embeds: [embed.setDescription(`${emojify(true)} | **Checking if this member is bannable**`).setColor('DarkPurple')] });
 
     const op = {
-        member: await guild.members.fetch(options.getUser('member').id),
+        member: options.getMember('member'),
         deleteMessageSeconds: options.getNumber('delete'),
         reason: options.getString('reason')
     };
@@ -53,9 +53,9 @@ module.exports = async (client, interaction) => {
         .setLabel('No')
     );
 
-    interaction.editReply({ embeds: [embed.setDescription(`**All the checks have been completed.**\n- **Are you sure you want to ban ${op.member}?**`).setColor('DarkPurple')], components: [row] });
+    const message = await interaction.editReply({ embeds: [embed.setDescription(`**All the checks have been completed.**\n- **Are you sure you want to ban ${op.member}?**`).setColor('DarkPurple')], components: [row] });
 
-    const collector = interaction.channel.createMessageComponentCollector({
+    const collector = message.createMessageComponentCollector({
         filter: (i) => i.user.id === interaction.user.id,
         componentType: ComponentType.Button
     });
@@ -66,12 +66,14 @@ module.exports = async (client, interaction) => {
         }
 
         try {
-            await member.ban({ 
+            await op.member.send({ components: [createDisabledButton(guild.name)], embeds: [embed.setDescription(`**You have been banned from ${guild.name}**\n- **${op.reason}**`).setColor('DarkPurple')] }).catch(console.error)
+
+            await op.member.ban({ 
                 deleteMessageSeconds: op.deleteMessageSeconds,
                 reason: op.reason ? op.reason : 'No reason provided.'
             });
 
-            return int.update({ components: [], embeds: [embed.setDescription(`${emojify(true)} | **Banned ${member.user.username}** | ${op.reason ? op.reason : 'No reason provided'}`).setColor('DarkPurple')] });
+            return int.update({ components: [], embeds: [embed.setDescription(`${emojify(true)} | **Banned ${op.member.user.username}** | ${op.reason ? op.reason : 'No reason provided'}`).setColor('DarkPurple')] });
         } catch (error) {
             console.error(error)
         }
