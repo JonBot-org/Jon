@@ -1,47 +1,61 @@
-const { PermissionFlagsBits, EmbedBuilder } = require("discord.js");
-const { emojify } = require("../../utils");
+const { EmbedBuilder, PermissionFlagsBits, ComponentType, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+const { emojify } = require('../../utils');
+const db = require("../../mongo/index");
+
 /**
- *
- * @param {Client} client
- * @param {ChatInputCommandInteraction} interaction
+ * @param {import('discord.js').Client} client
+ * @param {import('discord.js').ChatInputCommandInteraction} interaction
  */
 module.exports = async (client, interaction) => {
-  await interaction.deferReply();
-
-  const member = await interaction.guild.members.fetch(interaction.user.id);
-  const data = await client.db.guilds.findOne({ Id: interaction.guildId });
-  const embed = new EmbedBuilder()
+    const { guild, user } = interaction;
+    await interaction.deferReply();
+    const member = await guild.members.fetch(user.id);
+    const embed = new EmbedBuilder()
     .setAuthor({ name: member.displayName, iconURL: member.displayAvatarURL() })
     .setTimestamp();
+    
+    if (member && !member.permissions.has(PermissionFlagsBits.ManageGuild)) {
+        return interaction.editReply({ embeds: [embed.setDescription(`${emojify(false)} | **You don't have enough permissions to use this command.**`).setColor('Red')] });
+    }
 
-  if (member && !member.permissions.has(PermissionFlagsBits.ManageGuild)) {
-    embed
-      .setDescription(
-        `${emojify(false)} | **You don't have enough permissions to use this command.**`,
-      )
-      .setColor("Red");
-    return interaction.editReply({ embeds: [embed] });
-  }
+    const row = new ActionRowBuilder()
+    .addComponents(
+        new ButtonBuilder()
+        .setCustomId('leave.disable-yes')
+        .setStyle(ButtonStyle.Success)
+        .setLabel('Yes'),
+        new ButtonBuilder()
+        .setCustomId('leave.disable-no')
+        .setStyle(ButtonStyle.Danger)
+        .setLabel('No')
+    )
 
-  embed.setColor("DarkPurple");
+    interaction.editReply({ embeds: [embed.setDescription(`**Are you sure you want to disable the leave module?**`).setColor('DarkPurple')], components: [row] });
 
-  if (data && data.leaves.enabled) {
-    data.leaves.enabled = false;
-    data.leaves.channel = null;
-    data.leaves.message = null;
-    await data.save();
-    return interaction.editReply({
-      embeds: [
-        embed.setDescription(`${emojify(true)} | **Disabled leaves module.**`),
-      ],
+    const collector = interaction.channel.createMessageComponentCollector({
+        filter: (i) => i.user.id === interaction.user.id,
+        componentType: ComponentType.Button
     });
-  } else {
-    return interaction.editReply({
-      embeds: [
-        embed.setDescription(
-          `${emojify(false)} | **Leave module is already disabled**`,
-        ),
-      ],
+
+    collector.on('collect', async (int) => {
+        if (int.customId === "leave.disable-no") {
+            int.update({ embeds: [embed.setDescription(`${emojify(false)} | **Cancelled this process**\n- **Use /leave disable to run this command again.**`).setColor('DarkPurple')], components: [] });
+            return collector.stop()
+        }
+
+        await int.deferUpdate();
+        const data = await db.guilds.findOne({ Id: guild.id });
+
+        if (data && data.leaves.enabled) {
+            data.leaves.enabled = false;
+            data.leaves.channel = null;
+            await data.save();
+
+            int.editReply({ embeds: [embed.setDescription(`${emojify(true)} | **Disabled the leave module.**\n- **Thank you for using the bot!**`).setColor('DarkPurple')], components: [] });
+            return collector.stop();
+        } else {
+            int.editReply({ embeds: [embed.setDescription(`${emojify(false)} | **The leave module is already disabled in this server.**\n- **To enable use /leave enable**`).setColor('Orange')], components: [] });
+            return collector.stop();
+        }
     });
-  }
-};
+}

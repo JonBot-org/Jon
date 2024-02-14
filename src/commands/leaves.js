@@ -23,15 +23,24 @@ module.exports = {
     })
     .addSubcommand((comamnd) => {
       return comamnd
-        .setName("message")
-        .setDescription("Edit the message that gets sent when a member leaves.")
-        .addStringOption((option) =>
-          option
-            .setName("message")
-            .setDescription("Enter the message to send when a member leaves.")
-            .setRequired(true),
-        );
-    }),
+        .setName("edit")
+        .setDescription("Edit the message thats get sent.")
+        .addStringOption((option) => {
+         return option
+            .setName("content")
+            .setDescription("The content to display, if any.")
+          })
+          .addStringOption((option) => {
+            return option
+            .setName('description')
+            .setDescription('The description of the embed, if any.')
+          })
+          .addStringOption((option) => {
+            return option
+            .setName('color')
+            .setDescription('The color of the embed, default = Random')
+          })
+        }),
   /**
    *
    * @param {ChatInputCommandInteraction} interaction
