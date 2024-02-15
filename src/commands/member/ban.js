@@ -130,6 +130,8 @@ module.exports = async (client, interaction) => {
       });
     }
 
+    await int.deferUpdate();
+
     try {
       await op.member
         .send({
@@ -149,7 +151,7 @@ module.exports = async (client, interaction) => {
         reason: op.reason ? op.reason : "No reason provided.",
       });
 
-      return int.update({
+      return int.editReply({
         components: [],
         embeds: [
           embed
