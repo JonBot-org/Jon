@@ -133,6 +133,13 @@ module.exports = async (client, interaction) => {
       int.editReply(updateObject);
       return collector.stop();
     });
+
+    collector.on("end", () => {
+      return interaction.editReply({
+        components: [],
+        content: `This menu has **expired**, please re-run this command.`,
+      });
+    });
   } else {
     return interaction.editReply({
       embeds: [

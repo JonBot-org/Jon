@@ -6,6 +6,7 @@ const {
 } = require("discord.js");
 const blacklist = require("../../json/blacklist.json");
 const whitelist = require("../../json/whitelist.json");
+const db = require("../../mongo/index");
 
 module.exports = {
   name: Events.GuildCreate,
@@ -39,6 +40,13 @@ module.exports = {
       user.send({ embeds: [embed] }).catch();
 
       return guild.leave();
+    }
+
+    const data = await db.guilds.findOne({ Id: guild.id });
+    if (!data) {
+      await db.guilds.create({
+        Id: guild.id,
+      });
     }
 
     if (process.env.GUILD_CREATE_HOOK === undefined) return;

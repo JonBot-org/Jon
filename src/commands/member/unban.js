@@ -24,7 +24,7 @@ module.exports = async (client, interaction) => {
       embeds: [
         embed
           .setDescription(
-            `${emojify(false)} | **You don't have enough permissions to use this command**`,
+            `${emojify(false)} | **You don't have enough permissions to use this command.**`,
           )
           .setColor("Red"),
       ],
@@ -34,7 +34,7 @@ module.exports = async (client, interaction) => {
   interaction.editReply({
     embeds: [
       embed
-        .setDescription(`**Checking if this user is banned**`)
+        .setDescription(`**Checking if this user is banned.**`)
         .setColor("DarkPurple"),
     ],
   });
@@ -79,7 +79,7 @@ module.exports = async (client, interaction) => {
     embeds: [
       embed
         .setDescription(
-          `${emojify(true)} | **All the checks have been completed.**\n- **Do you want to continue unbanning this member?**`,
+          `${emojify(true)} | **All the checks have been completed.**\n- **Do you want to continue unbanning this user?**`,
         )
         .setColor("DarkPurple"),
     ],
@@ -115,7 +115,7 @@ module.exports = async (client, interaction) => {
             new EmbedBuilder()
               .setAuthor({ name: guild.name, iconURL: guild.iconURL() })
               .setDescription(
-                `**You have been unbanned from ${guild.name}**\n\n**Reason:**\n${op.reason ? op.reason : "No reason provided"}`,
+                `**You have been unbanned from ${guild.name}**\n\n**Reason:**\n- ${op.reason ? op.reason : "No reason provided"}`,
               )
               .setColor("DarkPurple")
               .setTimestamp(),
@@ -134,7 +134,7 @@ module.exports = async (client, interaction) => {
       });
       return collector.stop();
     } catch (error) {
-      console.error(error)
+      console.error(error);
       if (error.rawError.message === "Unknown Ban") {
         int.editReply({
           components: [],

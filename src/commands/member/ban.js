@@ -120,7 +120,7 @@ module.exports = async (client, interaction) => {
 
   collector.on("collect", async (int) => {
     if (int.customId === "member.ban-no") {
-      return int.update({
+      int.update({
         components: [],
         embeds: [
           embed
@@ -128,6 +128,7 @@ module.exports = async (client, interaction) => {
             .setColor("DarkPurple"),
         ],
       });
+      return collector.stop();
     }
 
     await int.deferUpdate();
@@ -151,7 +152,7 @@ module.exports = async (client, interaction) => {
         reason: op.reason ? op.reason : "No reason provided.",
       });
 
-      return int.editReply({
+      int.editReply({
         components: [],
         embeds: [
           embed
@@ -161,6 +162,8 @@ module.exports = async (client, interaction) => {
             .setColor("DarkPurple"),
         ],
       });
+
+      return collector.stop();
     } catch (error) {
       console.error(error);
     }

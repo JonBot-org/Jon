@@ -102,4 +102,11 @@ module.exports = async (client, interaction) => {
       });
     }
   });
+
+  collector.on("end", () => {
+    return interaction.editReply({
+      components: [],
+      content: "This nenu has **expired**, please re-run this command.",
+    });
+  });
 };

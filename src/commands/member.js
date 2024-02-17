@@ -82,6 +82,27 @@ module.exports = {
             .setName("reason")
             .setDescription("The resson for unbanning this member");
         });
+    })
+    .addSubcommand((command) => {
+      return command
+        .setName("mute")
+        .setDescription("Mute a member from this guild.")
+        .addUserOption((option) => {
+          return option
+            .setName("member")
+            .setDescription("The member to mute.")
+            .setRequired(true);
+        })
+        .addStringOption((option) => {
+          return option
+            .setName("duration")
+            .setDescription("How long do you want to mute this member for?");
+        })
+        .addStringOption((option) => {
+          return option
+            .setName("reason")
+            .setDescription("The reason for mute-ing this member?");
+        });
     }),
   /**
    * @param {import('discord.js').ChatInputCommandInteraction}

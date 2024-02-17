@@ -14,6 +14,13 @@ module.exports = {
   },
 
   /**
+   * @param {Boolean} param
+   */
+  enabled(param) {
+    return param ? "<:u_a:1201528414675423232>" : "<:u_d:1201528533906882720>";
+  },
+
+  /**
    * @param {String} message
    * @param {import('discord.js').GuildMember} member
    */

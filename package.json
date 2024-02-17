@@ -1,8 +1,8 @@
 {
   "name": "jon",
-  "version": "1.20.9",
+  "version": "2.0.4",
   "description": "Jon is a general utility Discord bot to fix all ya problems!",
-  "versionFile": "2024-02-13-1196v.js",
+  "versionFile": "v2/2024-02-17-204.js",
   "main": "index.js",
   "scripts": {
     "start": "node .",
@@ -12,6 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "chalk": "^4.1.2",
+    "convert-time-string": "^0.0.2",
     "discord.js": "^14.14.1",
     "dotenv": "^16.4.1",
     "moment": "^2.30.1",

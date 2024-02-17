@@ -107,4 +107,8 @@ module.exports = async (client, interaction) => {
       components: [],
     });
   });
+
+  collector.on('end', () => {
+    return interaction.editReply({ content: 'This menu has **expired**, please re-run this command.**', components: [] });
+  })
 };
