@@ -1,4 +1,4 @@
-const chalk = require("chalk");
+const { log } = require("../../utils");
 
 module.exports = {
   name: "warning",
@@ -8,6 +8,6 @@ module.exports = {
    * @param {Error} warning
    */
   run: (warning) => {
-    console.log(chalk.red(`[PROCESS] ||`, warning));
+    log("w", warning);
   },
 };

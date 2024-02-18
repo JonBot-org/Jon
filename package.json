@@ -1,6 +1,6 @@
 {
   "name": "jon",
-  "version": "2.0.4",
+  "version": "2.0.7",
   "description": "Jon is a general utility Discord bot to fix all ya problems!",
   "versionFile": "v2/2024-02-17-204.js",
   "main": "index.js",

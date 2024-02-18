@@ -1,5 +1,5 @@
 const { REST, Routes } = require("discord.js");
-const chalk = require("chalk");
+const { log } = require("../../utils");
 
 module.exports = {
   name: "ready",
@@ -16,19 +16,15 @@ module.exports = {
 
     deploy(client);
 
-    console.log(
-      chalk.green(
-        `[BOT] || ${client.user.username}, is ready! : ${process.env.NODE_ENV}`,
-      ),
-    );
+    log("i", `${client.user.username}, is ready!`);
   },
 };
 
 async function deploy(client) {
-  console.log(chalk.yellow(`[COMMAND] || Initializing REST client...`));
+  log("i", "Initializing REST client...");
   const rest = new REST().setToken(process.env.DISCORD_TOKEN);
   await rest.put(Routes.applicationCommands(process.env.CLIENT_ID), {
     body: client.commandsArray,
   });
-  console.log(chalk.green(`[COMMAND] || Updated (/) commands.`));
+  log("i", `Updated (/) commands.`);
 }

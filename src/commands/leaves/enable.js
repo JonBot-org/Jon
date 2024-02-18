@@ -108,7 +108,10 @@ module.exports = async (client, interaction) => {
     });
   });
 
-  collector.on('end', () => {
-    return interaction.editReply({ content: 'This menu has **expired**, please re-run this command.**', components: [] });
-  })
+  collector.on("end", () => {
+    return interaction.editReply({
+      content: "This menu has **expired**, please re-run this command.**",
+      components: [],
+    });
+  });
 };

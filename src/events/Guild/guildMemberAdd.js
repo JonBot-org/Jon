@@ -52,5 +52,11 @@ module.exports = {
         channel.send(messageObject);
       }
     }
+
+    const config = await db.config.findOne({ Id: guild.id });
+
+    if (config && config.member_logs.enabled) {
+      return;
+    }
   },
 };

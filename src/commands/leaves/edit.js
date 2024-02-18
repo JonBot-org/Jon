@@ -131,9 +131,12 @@ module.exports = async (client, interaction) => {
       return collector.stop();
     });
 
-    collector.on('end', () => {
-      return interaction.editReply({ content: 'This menu has **expired**, please re-run this command.', components: [] });
-    })
+    collector.on("end", () => {
+      return interaction.editReply({
+        content: "This menu has **expired**, please re-run this command.",
+        components: [],
+      });
+    });
   } else {
     return interaction.editReply({
       embeds: [

@@ -109,7 +109,10 @@ module.exports = async (client, interaction) => {
     }
   });
 
-  collector.on('end', () => {
-    return interaction.editReply({ content: 'This menu has **expired**, plesse re-run this command.', components: [] });
+  collector.on("end", () => {
+    return interaction.editReply({
+      content: "This menu has **expired**, plesse re-run this command.",
+      components: [],
+    });
   });
 };

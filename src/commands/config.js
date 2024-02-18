@@ -27,6 +27,29 @@ module.exports = {
                 .setRequired(true);
             });
         });
+    })
+    .addSubcommandGroup((command) => {
+      return command
+        .setName("events")
+        .setDescription("Configure the event settings for this guild.")
+        .addSubcommand((option) => {
+          return option
+            .setName("server")
+            .setDescription("Recive & log server updates to a channel.")
+            .addChannelOption((option) => {
+              return option
+                .setName("channel")
+                .setDescription("The channel to log these events to.")
+                .addChannelTypes(ChannelType.GuildText)
+                .setRequired(true);
+            })
+            .addBooleanOption((option) => {
+              return option
+                .setName("enabled")
+                .setDescription("Do you want to enable this event?")
+                .setRequired(true);
+            });
+        });
     }),
   /**
    * @param {import('discord.js').ChatInputCommandInteraction} interaction

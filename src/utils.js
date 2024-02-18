@@ -1,3 +1,4 @@
+const chalk = require("chalk");
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
 
 module.exports = {
@@ -49,5 +50,31 @@ module.exports = {
           .setCustomId("disabled"),
       )
       .toJSON();
+  },
+
+  /**
+   * @param {string} t
+   * @param {any} message
+   */
+  log(t, message) {
+    if (t === "i") {
+      console.log(
+        chalk.bgHex("#BAC506")("[INFO]"),
+        chalk.hex("#8F7DFF")("||"),
+        chalk.hex("#808B88")(message),
+      );
+    } else if (t === "w") {
+      console.log(
+        chalk.bgHex("#ffb3ba")("[WARN]"),
+        chalk.hex("#A93133")("||"),
+        message,
+      );
+    } else if (t === "e") {
+      console.log(
+        chalk.bgHex("#FA8072")("[ERROR]"),
+        chalk.hex("#bae1ff")("||"),
+        message,
+      );
+    }
   },
 };
