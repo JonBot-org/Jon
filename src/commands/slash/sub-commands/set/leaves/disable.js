@@ -25,10 +25,12 @@ module.exports = async (interaction, client) => {
     return interaction.editReply({ embeds: [completeEmbed] });
   } else {
     const NoConfig = new EmbedBuilder()
-    .setAuthor({ name: user.username, iconURL: user.displayAvatarURL() })
-    .setDescription(`The leave module is already disabled. To enable use </set leave enable:1209442876090617856>`)
-    .setColor('LuminousVividPink')
-    .setTimestamp()
+      .setAuthor({ name: user.username, iconURL: user.displayAvatarURL() })
+      .setDescription(
+        `The leave module is already disabled. To enable use </set leaves enable:1209442876090617856>`,
+      )
+      .setColor("LuminousVividPink")
+      .setTimestamp();
 
     return interaction.editReply({ embeds: [NoConfig] });
   }

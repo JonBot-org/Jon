@@ -17,8 +17,11 @@ function replaceVariables(type, string, member) {
       .replaceAll("{user_name}", member.user.username)
       .replaceAll("{user_joinedTimestamp}", "...")
       .replaceAll("{user_joinedDate}", "...")
+      .replaceAll('{user_createdTimestamp}', '...')
+      .replaceAll('{user_createdDate}', '...')
       .replaceAll("{server_members}", member.guild.memberCount)
-      .replaceAll("{sever_name}", member.guild.name);
+      .replaceAll("{server_name}", member.guild.name)
+      .replaceAll("&n&", '\n')
   } else if (type === "a_n") {
     return string
       .replaceAll("{user_name}", member.user.username)
@@ -27,10 +30,6 @@ function replaceVariables(type, string, member) {
     return string
       .replaceAll("{user_avatar}", member.user.displayAvatarURL())
       .replaceAll("{server_icon}", member.guild.iconURL());
-  } else if (type === "t") {
-    return string
-      .replaceAll("{user_name}", member.user.username)
-      .replaceAll("{server_name}", member.guild.name);
   }
 }
 

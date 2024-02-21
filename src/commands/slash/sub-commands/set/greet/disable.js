@@ -11,7 +11,7 @@ module.exports = async (interaction, client) => {
 
   const data = await guilds.findOne({ id: guild.id });
 
-  if (!data.configurations.greet.enabled || !data) {
+  if (!data || !data.configurations.greet.enabled) {
     const NoConfigs = new EmbedBuilder()
       .setAuthor({
         name: member.user.username,
