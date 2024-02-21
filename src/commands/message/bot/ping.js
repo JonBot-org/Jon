@@ -1,7 +1,21 @@
+const { EmbedBuilder } = require("discord.js");
+
 module.exports = {
-    name: 'ping',
-    aliases: [],
-    execute: () => {
-        console.log('hi')
-    }
-}
+  name: "ping",
+  /**
+   * @param {import('discord.js').Message} message
+   * @param {import('discord.js').Client} client
+   */
+  execute: (message, client) => {
+    const embed = new EmbedBuilder()
+      .setAuthor({
+        name: message.author.username,
+        iconURL: message.author.displayAvatarURL(),
+      })
+      .setDescription(`My ping is **${client.ws.ping}ms**`)
+      .setColor("Random")
+      .setTimestamp();
+
+    message.reply({ embeds: [embed] });
+  },
+};

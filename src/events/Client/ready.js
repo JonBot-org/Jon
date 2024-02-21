@@ -1,12 +1,11 @@
 const { Events } = require("discord.js");
-const logger = require('jon-lib').Logger;
+const logger = require("jon-lib").Logger;
 
 module.exports.data = {
-    name: Events.ClientReady,
-    once: true
-}
+  name: Events.ClientReady,
+  once: true,
+};
 
 module.exports.execute = (client) => {
-    console.log('...')
-    logger.prototype.info(`${client.user.username} is ready!`)
-}
+  logger.prototype.info(`${client.user.username} is ready!`);
+};
