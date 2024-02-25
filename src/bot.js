@@ -5,7 +5,6 @@ const {
   GatewayIntentBits,
   Partials,
 } = require("discord.js");
-const { Logger } = require("jon-lib");
 const {
   handleCommands,
   handleEvents,

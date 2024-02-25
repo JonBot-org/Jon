@@ -1,4 +1,4 @@
-const { Events, EmbedBuilder } = require("discord.js");
+const { Events, EmbedBuilder, ActionRowBuilder, StringSelectMenuBuilder, StringSelectMenuOptionBuilder } = require("discord.js");
 const logging = require("../../db/logging");
 
 module.exports.data = {
@@ -12,6 +12,36 @@ module.exports.data = {
 module.exports.execute = async (interaction) => {
   if (!interaction.isButton()) return;
 
+  // About system
+  if (interaction.customId === "ab.commands") {
+    const embed = new EmbedBuilder()
+    .setAuthor({ name: interaction.user.username, iconURL: interaction.user.displayAvatarURL() })
+    .setDescription(`Please select a category using the select menu.\n» **Note:** The select menu has both message command and slash command categories.`)
+    .setColor('LuminousVividPink')
+    .setTimestamp();
+
+    const categoryRow = new ActionRowBuilder()
+    .addComponents(
+      new StringSelectMenuBuilder()
+      .setCustomId('ab-commands.category')
+      .setMaxValues(1)
+      .setPlaceholder('Select A Command Category.')
+      .addOptions(
+        new StringSelectMenuOptionBuilder()
+        .setLabel('Set')
+        .setDescription('set: Configure the server settings.')
+        .setValue('set'),
+        new StringSelectMenuOptionBuilder()
+        .setLabel('Test')
+        .setDescription('test: Test modules.')
+        .setValue('test')
+      )
+    );
+
+    return interaction.update({ embeds: [embed], components: [categoryRow] })
+  }
+
+  // Logging system.
   if (interaction.customId === "logging-channel.disable") {
     await interaction.deferUpdate();
     const data = await logging.findOne({ id: interaction.guildId });

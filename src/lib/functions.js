@@ -102,7 +102,7 @@ function handleCommands(client) {
     slash_data.push(slash.data.toJSON());
   }
 
-  deploy_slashcommands(slash_data);
+  //deploy_slashcommands(slash_data);
 
   const message_dir = fs.readdirSync("./src/commands/message/");
   for (const message_folder of message_dir) {
