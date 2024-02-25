@@ -11,6 +11,7 @@
   "author": "Rayaan",
   "license": "ISC",
   "dependencies": {
+    "axios": "^1.6.7",
     "chalk": "^4.1.2",
     "convert-time-string": "^0.0.2",
     "discord.js": "^14.14.1",

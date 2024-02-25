@@ -9,6 +9,9 @@ module.exports = {
     .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild)
     .addSubcommand((command) => {
       return command.setName("greet").setDescription("Test the greet module.");
+    })
+    .addSubcommand((command) => {
+      return command.setName("leave").setDescription("The leave module.");
     }),
   /**
    * @param {import('discord.js').ChatInputCommandInteraction} interaction

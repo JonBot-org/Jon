@@ -6,6 +6,9 @@ module.exports.data = {
   once: true,
 };
 
+/**
+ * @param {import('discord.js').Client} client
+ */
 module.exports.execute = (client) => {
   logger.prototype.info(`${client.user.username} is ready!`);
 };

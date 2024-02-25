@@ -6,7 +6,7 @@ module.exports = {
    * @param {import('discord.js').Message} message
    * @param {import('discord.js').Client} client
    */
-  execute: (message, client) => {
+  execute: (message, args, client) => {
     const embed = new EmbedBuilder()
       .setAuthor({
         name: message.author.username,

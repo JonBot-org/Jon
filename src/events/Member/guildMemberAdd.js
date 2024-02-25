@@ -32,7 +32,11 @@ module.exports.execute = async (member) => {
         );
     const title = data.configurations.greet.title
       ? replaceVariables("d-m", data.configurations.greet.title, member)
-      : replaceVariables("d-m", "{server_name} now has {server_members} members.", member);
+      : replaceVariables(
+          "d-m",
+          "{server_name} now has {server_members} members.",
+          member,
+        );
     const author_name = data.configurations.greet.author_name
       ? replaceVariables("a-n", data.configurations.greet.author_name, member)
       : replaceVariables("a-n", "{user_name}", member);
@@ -60,7 +64,7 @@ module.exports.execute = async (member) => {
       .setColor(color);
 
     if (author_name !== undefined) {
-        embed.setAuthor({ name: author_name, iconURL: author_icon });
+      embed.setAuthor({ name: author_name, iconURL: author_icon });
     }
 
     if (timestamp === "YES") {

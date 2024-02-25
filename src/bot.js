@@ -1,5 +1,10 @@
 require("dotenv").config();
-const { Client, Collection, GatewayIntentBits } = require("discord.js");
+const {
+  Client,
+  Collection,
+  GatewayIntentBits,
+  Partials,
+} = require("discord.js");
 const { Logger } = require("jon-lib");
 const {
   handleCommands,
@@ -7,8 +12,6 @@ const {
   connectMongoDB,
 } = require("./lib/functions");
 const process = require("node:process");
-const mongoose = require("mongoose");
-const logger = new Logger();
 
 const client = new Client({
   intents: [
@@ -16,8 +19,10 @@ const client = new Client({
     GatewayIntentBits.GuildMembers,
     GatewayIntentBits.GuildMessages,
     GatewayIntentBits.MessageContent,
+    GatewayIntentBits.GuildModeration,
   ],
   allowedMentions: { repliedUser: false },
+  partials: [Partials.Message, Partials.Channel],
 });
 
 client.applicationCommands = new Collection();

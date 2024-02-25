@@ -142,6 +142,11 @@ module.exports = {
             .setName("disable")
             .setDescription("Disable the leave module.");
         });
+    })
+    .addSubcommand((command) => {
+      return command
+        .setName("logging")
+        .setDescription("Configure the logging settings.");
     }),
 };
 

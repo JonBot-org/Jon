@@ -19,5 +19,5 @@ module.exports.execute = (message, client) => {
 
   if (!command) return;
 
-  command.execute(message, client);
+  command.execute(message, args, client);
 };

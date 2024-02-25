@@ -15,13 +15,22 @@ function replaceVariables(type, string, member) {
     return string
       .replaceAll("{user}", member)
       .replaceAll("{user_name}", member.user.username)
-      .replaceAll("{user_joinedTimestamp}", "...")
-      .replaceAll("{user_joinedDate}", "...")
-      .replaceAll('{user_createdTimestamp}', '...')
-      .replaceAll('{user_createdDate}', '...')
+      .replaceAll(
+        "{user_joinedTimestamp}",
+        `<t:${Math.floor(new Date(member.joinedAt).getTime() / 1000).toFixed(0)}>`,
+      )
+      .replaceAll("{user_joinedDate}", new Date(member.joinedAt).toDateString())
+      .replaceAll(
+        "{user_createdTimestamp}",
+        `<t:${Math.floor(new Date(member.user.createdAt).getTime() / 1000).toFixed(0)}>`,
+      )
+      .replaceAll(
+        "{user_createdDate}",
+        new Date(member.user.createdAt).toDateString(),
+      )
       .replaceAll("{server_members}", member.guild.memberCount)
       .replaceAll("{server_name}", member.guild.name)
-      .replaceAll("&n&", '\n')
+      .replaceAll("&n&", "\n");
   } else if (type === "a_n") {
     return string
       .replaceAll("{user_name}", member.user.username)
@@ -136,6 +145,57 @@ function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
+function convertNumberToType(channelType) {
+  let x;
+  switch (channelType) {
+    case 0:
+      x = "Text";
+      break;
+    case 1:
+      x = "DM";
+      break;
+    case 2:
+      x = "Voice";
+      break;
+    case 3:
+      x = "Group DM";
+      break;
+    case 4:
+      x = "Category";
+      break;
+    case 5:
+      x = "Annoucment";
+
+      break;
+    case 10:
+      x = "Annoucment Thread";
+      break;
+    case 11:
+      x = "Public Thread";
+      break;
+    case 12:
+      x = "Private Thread";
+      break;
+    case 13:
+      x = "Stage";
+      break;
+    case 14:
+      x = "Directory";
+      break;
+    case 15:
+      x = "Forum";
+      break;
+    case 16:
+      x = "Media";
+      break;
+    default:
+      x = new RangeError("Invalid Channel Type");
+      break;
+  }
+
+  return x;
+}
+
 module.exports = {
   handleCommands,
   handleEvents,
@@ -144,4 +204,5 @@ module.exports = {
   replaceVariables,
   isImage,
   sleep,
+  convertNumberToType,
 };
