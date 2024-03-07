@@ -2,6 +2,8 @@ const { EmbedBuilder } = require("discord.js");
 
 module.exports = {
   name: "ping",
+  category: "bot",
+  description: "",
   /**
    * @param {import('discord.js').Message} message
    * @param {import('discord.js').Client} client

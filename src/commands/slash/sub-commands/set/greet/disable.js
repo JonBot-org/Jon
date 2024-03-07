@@ -1,41 +1,24 @@
 const { EmbedBuilder } = require("discord.js");
 const guilds = require("../../../../../db/guilds");
+const { emojis } = require('../../../../../lib/functions');
 
 /**
  * @param {import('discord.js').ChatInputCommandInteraction} interaction
- * @param {import('discord.js').Client} client
  */
-module.exports = async (interaction, client) => {
+module.exports = async (interaction) => {
   await interaction.deferReply();
-  const { guild, member } = interaction;
-
+  const { guild, user } = interaction;
   const data = await guilds.findOne({ id: guild.id });
 
-  if (!data || !data.configurations.greet.enabled) {
-    const NoConfigs = new EmbedBuilder()
-      .setAuthor({
-        name: member.user.username,
-        iconURL: member.user.displayAvatarURL(),
-      })
-      .setDescription(
-        `The greet module is already disabled. To enabled use </set greet enable:1209442876090617856>`,
-      )
-      .setColor("LuminousVividPink")
-      .setTimestamp();
-
-    return interaction.editReply({ embeds: [NoConfigs] });
+  if (data && data.configurations.greet.enabled) {
+    data.configurations.greet.enabled = false;
+    data.configurations.greet.channel = null;
+    await data.save();
   }
 
-  data.configurations.greet.enabled = false;
-  data.configurations.greet.channel = null;
-  await data.save();
-
   const completeEmbed = new EmbedBuilder()
-    .setAuthor({
-      name: member.user.username,
-      iconURL: member.user.displayAvatarURL(),
-    })
-    .setDescription(`Disabled greet module.`)
+    .setAuthor({ name: user.username, iconURL: user.displayAvatarURL() })
+    .setDescription(`${emojis.success} | Disabled greet module.`)
     .setColor("LuminousVividPink")
     .setTimestamp();
 

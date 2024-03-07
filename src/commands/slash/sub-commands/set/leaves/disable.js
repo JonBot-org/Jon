@@ -1,11 +1,11 @@
 const { EmbedBuilder } = require("discord.js");
 const guilds = require("../../../../../db/guilds");
+const { emojis } = require('../../../../../lib/functions')
 
 /**
- * @param {import('discord.js').ChatInputCommandInteraction} interaction
- * @param {import('discord.js').Client} client
+ * @param {import('discord.js').ChatInputCommandInteraction} interaction 
  */
-module.exports = async (interaction, client) => {
+module.exports = async (interaction) => {
   await interaction.deferReply();
   const { guild, user } = interaction;
 
@@ -15,23 +15,13 @@ module.exports = async (interaction, client) => {
     data.configurations.leave.enabled = false;
     data.configurations.leave.channel = null;
     await data.save();
+  }
 
     const completeEmbed = new EmbedBuilder()
       .setAuthor({ name: user.username, iconURL: user.displayAvatarURL() })
-      .setDescription(`Disabled leave module.`)
+      .setDescription(`${emojis.success} Disabled leave module.`)
       .setColor("LuminousVividPink")
       .setTimestamp();
 
     return interaction.editReply({ embeds: [completeEmbed] });
-  } else {
-    const NoConfig = new EmbedBuilder()
-      .setAuthor({ name: user.username, iconURL: user.displayAvatarURL() })
-      .setDescription(
-        `The leave module is already disabled. To enable use </set leaves enable:1209442876090617856>`,
-      )
-      .setColor("LuminousVividPink")
-      .setTimestamp();
-
-    return interaction.editReply({ embeds: [NoConfig] });
-  }
 };

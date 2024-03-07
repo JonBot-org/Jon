@@ -1,4 +1,5 @@
 const {
+  ChannelType,
   EmbedBuilder,
   ActionRowBuilder,
   ButtonBuilder,
@@ -6,85 +7,98 @@ const {
   ComponentType,
 } = require("discord.js");
 const guilds = require("../../../../../db/guilds");
-const { emojis, sleep } = require("../../../../../lib/functions");
+const {
+  set: { report },
+} = require("../../../../../Strings/messages.json");
 
 /**
  * @param {import('discord.js').ChatInputCommandInteraction} interaction
+ * @param {import('discord.js').Client} client
  */
-module.exports = async (interaction) => {
+module.exports = async (interaction, client) => {
   await interaction.deferReply({ fetchReply: true });
-  const { guild, options, member } = interaction;
+  const { options, member, guild } = interaction;
 
-  const channel = options.getChannel("channel", true);
+  const channel = options.getChannel("channel", true, ChannelType.GuildText);
   const data = await guilds.findOne({ id: guild.id });
 
   if (data) {
     if (
-      data.configurations.greet.enabled &&
-      channel.id != data.configurations.greet.channel
+      data.configurations.report.enabled &&
+      channel.id !== data.configurations.report.channel
     ) {
-      const confirmEmbed = new EmbedBuilder()
+      const ConfirmEmbed = new EmbedBuilder()
         .setAuthor({
           name: member.user.username,
           iconURL: member.user.displayAvatarURL(),
         })
-        .setDescription(`${emojis.loading} | Greet module is already enabled.\n» **Current Channel:** <#${data.configurations.greet.channel}>\n» **Do you want to update the channel?**`)
-        .setColor("DarkOrange")
+        .setDescription(
+          report["enable.confirm"].replace(
+            "{channel}",
+            `<#${data.configurations.report.channel}>`,
+          ),
+        )
+        .setColor("LuminousVividPink")
         .setTimestamp();
 
-      const confirmRow = new ActionRowBuilder().addComponents(
+      const ConfirmRow = new ActionRowBuilder().addComponents(
         new ButtonBuilder()
-          .setCustomId("set.greet-yes")
+          .setCustomId("set-report.yes")
           .setLabel("Yes")
           .setStyle(ButtonStyle.Success),
         new ButtonBuilder()
-          .setCustomId("set.greet-no")
+          .setCustomId("set-report.no")
           .setLabel("No")
           .setStyle(ButtonStyle.Danger),
       );
 
       const message = await interaction.editReply({
-        embeds: [confirmEmbed],
-        components: [confirmRow],
+        embeds: [ConfirmEmbed],
+        components: [ConfirmRow],
       });
 
       const collector = message.createMessageComponentCollector({
-        filter: (int) => int.user.id === interaction.user.id,
+        filter: (int) => int.user.id === member.user.id,
         componentType: ComponentType.Button,
         maxComponents: 1,
       });
 
       collector.on("collect", async (int) => {
-        if (int.customId === "set.greet-no") {
-          const cancelEmbed = new EmbedBuilder()
+        if (int.customId === "set-report.no") {
+          const CancelEmbed = new EmbedBuilder()
             .setAuthor({
               name: member.user.username,
               iconURL: member.user.displayAvatarURL(),
             })
-            .setDescription(`${emojis.success} | Stopped this process.\n» **No settings were changed.**`)
+            .setDescription(report["enable.confirm.cancel"])
             .setColor("LuminousVividPink")
             .setTimestamp();
-          int.update({ components: [], embeds: [cancelEmbed] });
-          sleep(5000);
-          await int.deleteReply().catch();
-          return collector.stop("PS");
+
+          int.update({ embeds: [CancelEmbed], components: [] });
+          setTimeout(function () {
+            interaction.deleteReply().catch();
+          }, 5000);
+          return collector.stop(".");
         }
 
         await int.deferUpdate();
-        data.configurations.greet.enabled = true;
-        data.configurations.greet.channel = channel.id;
+
+        data.configurations.report.channel = channel.id;
         await data.save();
-        const completeEmbed = new EmbedBuilder()
+
+        const CompleteEmbed = new EmbedBuilder()
           .setAuthor({
             name: member.user.username,
             iconURL: member.user.displayAvatarURL(),
           })
-          .setDescription(`${emojis.success} | Updated greet channel.\n» **Channel:** ${channel}`)
+          .setDescription(
+            report["enable.confirm.success"].replace("{channel}", `${channel}`),
+          )
           .setColor("LuminousVividPink")
           .setTimestamp();
 
-        int.editReply({ embeds: [completeEmbed], components: [] });
-        return collector.stop("PS");
+        int.editReply({ embeds: [CompleteEmbed], components: [] });
+        return collector.stop(".");
       });
 
       collector.on("end", (collected, reason) => {
@@ -96,15 +110,15 @@ module.exports = async (interaction) => {
       return;
     }
 
-    data.configurations.greet.enabled = true;
-    data.configurations.greet.channel = channel.id;
+    data.configurations.report.enabled = true;
+    data.configurations.report.channel = channel.id;
     await data.save();
   } else {
     await guilds.create({
       id: guild.id,
       ownerId: guild.ownerId,
       configurations: {
-        greet: {
+        report: {
           enabled: true,
           channel: channel.id,
         },
@@ -112,14 +126,14 @@ module.exports = async (interaction) => {
     });
   }
 
-  const completeEmbed = new EmbedBuilder()
+  const CompleteEmbed = new EmbedBuilder()
     .setAuthor({
       name: member.user.username,
       iconURL: member.user.displayAvatarURL(),
     })
-    .setDescription(`${emojis.success} | Enabled greet module.\n» **Channel:** ${channel}`)
+    .setDescription(report["enable.success"].replace("{channel}", `${channel}`))
     .setColor("LuminousVividPink")
     .setTimestamp();
 
-  return interaction.editReply({ embeds: [completeEmbed] });
+  return interaction.editReply({ embeds: [CompleteEmbed] });
 };

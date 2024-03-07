@@ -102,7 +102,7 @@ function handleCommands(client) {
     slash_data.push(slash.data.toJSON());
   }
 
-  //deploy_slashcommands(slash_data);
+  deploy_slashcommands(slash_data);
 
   const message_dir = fs.readdirSync("./src/commands/message/");
   for (const message_folder of message_dir) {
@@ -205,4 +205,9 @@ module.exports = {
   isImage,
   sleep,
   convertNumberToType,
+  emojis: {
+    success: '<:u_t:1200466489703157831>',
+    fail: '<:u_f:1200466558733004811>',
+    loading: "<a:u_l:1212358994023284787>"
+  }
 };

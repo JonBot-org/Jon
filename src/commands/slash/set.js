@@ -13,8 +13,30 @@ module.exports = {
     .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild)
     .addSubcommandGroup((command) => {
       return command
+        .setName("report")
+        .setDescription("Configure the report module.")
+        .addSubcommand((option) => {
+          return option
+            .setName("enable")
+            .setDescription("Enable the report module.")
+            .addChannelOption((channel) => {
+              return channel
+                .setName("channel")
+                .setDescription("The channel to configure.")
+                .setRequired(true)
+                .addChannelTypes(ChannelType.GuildText);
+            });
+        })
+        .addSubcommand((option) => {
+          return option
+            .setName("disable")
+            .setDescription("Disable the report module.");
+        });
+    })
+    .addSubcommandGroup((command) => {
+      return command
         .setName("greet")
-        .setDescription("Comfigure the greet module.")
+        .setDescription("Configure the greet module.")
         .addSubcommand((option) => {
           return option
             .setName("enable")
@@ -23,7 +45,8 @@ module.exports = {
               return channel
                 .setName("channel")
                 .setDescription("The channel to send greet messages.")
-                .setRequired(true);
+                .setRequired(true)
+                .addChannelTypes(ChannelType.GuildText);
             });
         })
         .addSubcommand((option) => {

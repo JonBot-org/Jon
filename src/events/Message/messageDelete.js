@@ -1,8 +1,5 @@
-const {
-  Events,
-  EmbedBuilder
-} = require("discord.js");
-const logging = require('../../db/logging');
+const { Events, EmbedBuilder } = require("discord.js");
+const logging = require("../../db/logging");
 
 module.exports.data = {
   name: Events.MessageDelete,

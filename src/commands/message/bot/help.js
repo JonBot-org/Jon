@@ -7,6 +7,8 @@ const {
 
 module.exports = {
   name: "help",
+  category: "bot",
+  description: "",
   /**
    * @param {import('discord.js').Message} message
    * @param {import('discord.js').Client} client

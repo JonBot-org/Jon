@@ -70,7 +70,7 @@ module.exports.execute = async (old, message, client) => {
     if (!data.message_config.cid) return;
     const channel = await message.guild.channels.fetch(data.message_config.cid);
     if (channel) {
-      channel.send({ embeds: [embed], components: [row] })
+      channel.send({ embeds: [embed], components: [row] });
     }
   }
 };

@@ -4,6 +4,9 @@ const {
   StringSelectMenuOptionBuilder,
   EmbedBuilder,
 } = require("discord.js");
+const {
+  set: { logging },
+} = require("../../../../Strings/messages.json");
 
 /**
  * @param {import('discord.js').ChatInputCommandInteraction} interaction
@@ -15,9 +18,7 @@ module.exports = async (interaction, client) => {
 
   const typeSelectEmbed = new EmbedBuilder()
     .setAuthor({ name: user.username, iconURL: user.displayAvatarURL() })
-    .setDescription(
-      `*Select what you want to configure using the select menu.*`,
-    )
+    .setDescription(logging["embed.select"])
     .setColor("LuminousVividPink")
     .setTimestamp();
 

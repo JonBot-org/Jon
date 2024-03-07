@@ -1,4 +1,4 @@
-const { Events, EmbedBuilder, Colors } = require("discord.js");
+const { Events, EmbedBuilder } = require("discord.js");
 const guilds = require("../../db/guilds");
 const { replaceVariables } = require("../../lib/functions");
 
@@ -11,73 +11,105 @@ module.exports.data = {
  * @param {import('discord.js').GuildMember} member
  */
 module.exports.execute = async (member) => {
-  await member.fetch();
-  const data = await guilds.findOne({ id: member.guild.id });
-
+  const { guild } = member;
+  const data = await guilds.findOne({ id: guild.id });
   if (!data) return;
 
   if (data.configurations.greet.enabled) {
-    console.log(data.configurations.greet);
-    // Variables
-    const Options = {};
-    const message = data.configurations.greet.message
-      ? replaceVariables("d-m", data.configurations.greet.message, member)
-      : replaceVariables("d-m", "{user}, **Welcome!**", member);
-    const description = data.configurations.greet.description
-      ? replaceVariables("d-m", data.configurations.greet.description, member)
-      : replaceVariables(
+    const embed = new EmbedBuilder();
+    let MessageSendOptions = {};
+
+    if (
+      !data.configurations.greet.message &&
+      !data.configurations.greet.description
+    ) {
+      embed
+        .setAuthor({
+          name: member.user.username,
+          iconURL: member.user.displayAvatarURL(),
+        })
+        .setThumbnail(guild.iconURL())
+        .setDescription(
+          `\`${member.user.username}\` just joined \`${guild.name}\` 👋\n\n`,
+        )
+        .setColor("LuminousVividPink")
+        .setTimestamp();
+
+      if (guild.rulesChannelId) {
+        embed.data.description += `» **Rules:** <#${guild.rulesChannelId}>`;
+      }
+
+      Object.assign(MessageSendOptions, {
+        embeds: [embed],
+        content: `${member} 👋`,
+      });
+    } else {
+      embed.setColor(
+        data.configurations.greet.color
+          ? data.configurations.greet.color
+          : "LuminousVividPink",
+      );
+
+      if (data.configurations.greet.timestamp === "YES") {
+        embed.setTimestamp();
+      }
+
+      if (data.configurations.greet.author_icon) {
+        embed.setAuthor({
+          name: replaceVariables(
+            "a-n",
+            data.configurations.greet.author_name,
+            member,
+          ),
+          iconURL: replaceVariables(
+            "a-i",
+            data.configurations.greet.author_icon,
+            member,
+          ),
+        });
+      } else {
+        embed.setAuthor({
+          name: replaceVariables(
+            "a-n",
+            data.configurations.greet.author_name,
+            member,
+          ),
+        });
+      }
+
+      if (data.configurations.greet.title) {
+        embed.setTitle(
+          replaceVariables("d-m", data.configurations.greet.title, member),
+        );
+      }
+
+      if (data.configurations.greet.description) {
+        embed.setDescription(
+          replaceVariables(
+            "d-m",
+            data.configurations.greet.description,
+            member,
+          ),
+        );
+      }
+
+      let content = null;
+      if (data.configurations.greet.message) {
+        content = replaceVariables(
           "d-m",
-          "✨ Created At: {user_createdTimestamp}&n&✨ Joined At: {user_joinedTimestamp}",
+          data.configurations.greet.message,
           member,
         );
-    const title = data.configurations.greet.title
-      ? replaceVariables("d-m", data.configurations.greet.title, member)
-      : replaceVariables(
-          "d-m",
-          "{server_name} now has {server_members} members.",
-          member,
-        );
-    const author_name = data.configurations.greet.author_name
-      ? replaceVariables("a-n", data.configurations.greet.author_name, member)
-      : replaceVariables("a-n", "{user_name}", member);
-    const author_icon = data.configurations.greet.author_icon
-      ? replaceVariables("a-i", data.configurations.greet.author_icon, member)
-      : replaceVariables("a-i", "{user_avatar}", member);
-    const color = data.configurations.greet.color
-      ? Colors[data.configurations.greet.color]
-      : Colors.DarkVividPink;
-    const timestamp = data.configurations.greet.timestamp;
+      }
 
-    console.log(
-      message,
-      description,
-      title,
-      author_name,
-      author_icon,
-      color,
-      timestamp,
-    );
-
-    const embed = new EmbedBuilder()
-      .setTitle(title)
-      .setDescription(description)
-      .setColor(color);
-
-    if (author_name !== undefined) {
-      embed.setAuthor({ name: author_name, iconURL: author_icon });
+      Object.assign(MessageSendOptions, { embeds: [embed], content });
     }
 
-    if (timestamp === "YES") {
-      embed.setTimestamp();
-    }
-
-    Object.assign(Options, { content: message, embeds: [embed] });
-
-    const channel = await member.guild.channels.fetch(
+    const channel = await guild.channels.fetch(
       data.configurations.greet.channel,
     );
     if (channel) {
-      channel.send(Options);
+      channel.send(MessageSendOptions).catch();
     }
   }
 };

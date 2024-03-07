@@ -7,7 +7,7 @@ const {
   ButtonStyle,
 } = require("discord.js");
 const { convertNumberToType } = require("../../lib/functions");
-const logging = require('../../db/logging');
+const logging = require("../../db/logging");
 
 module.exports.data = {
   name: Events.ChannelCreate,
@@ -59,9 +59,11 @@ module.exports.execute = async (channel, client) => {
 
   if (data.channel_config.enabled) {
     if (!data.channel_config.cid) return;
-    const logChannel = await channel.guild.channels.fetch(data.channel_config.cid);
+    const logChannel = await channel.guild.channels.fetch(
+      data.channel_config.cid,
+    );
     if (logChannel) {
-      logChannel.send({ embeds: [embed], components: [row] })
+      logChannel.send({ embeds: [embed], components: [row] });
     }
   }
 };

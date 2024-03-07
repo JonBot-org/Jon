@@ -8,6 +8,8 @@ const {
 
 module.exports = {
   name: "whois",
+  category: "utility",
+  description: "",
   /**
    * @param {import('discord.js').Message} message
    * @param {import('discord.js').Client} client
@@ -77,7 +79,6 @@ module.exports = {
         await interaction.deferReply({ ephemeral: true });
 
         if (interaction.customId === "m-u.flags") {
-          console.log(member.flags.toArray(), member.user.flags.toArray());
           const flagsEmbed = new EmbedBuilder()
             .setAuthor({
               name: member.user.username,

@@ -1,5 +1,7 @@
 module.exports = {
   name: "cat",
+  category: "fun",
+  description: "",
   execute: async (message, args, client) => {
     const ArrayOfCats = [
       "https://tenor.com/rKFHsvVO1oI.gif",

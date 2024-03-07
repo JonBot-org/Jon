@@ -7,6 +7,11 @@ module.exports = mongoose.model(
     ownerId: String,
 
     configurations: {
+      report: {
+        enabled: { type: Boolean, default: false },
+        channel: String,
+      },
+
       greet: {
         enabled: { type: Boolean, default: false },
         channel: String,

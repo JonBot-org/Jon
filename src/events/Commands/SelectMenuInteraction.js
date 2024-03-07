@@ -23,29 +23,63 @@ module.exports.execute = async (interaction) => {
     // About
     if (interaction.customId === "ab-commands.category") {
       if (interaction.values[0] === "set") {
-        const command = client.applicationCommands.filter(value => value.data.name === "set").get('set');
-        const commands = command.data.options.map((value) => {
-          return `» **Name:** ${value.name}\n» **Description:** ${value.description}`
-        }).join('\n\n');
+        const command = client.applicationCommands
+          .filter((value) => value.data.name === "set")
+          .get("set");
+        const commands = command.data.options
+          .map((value) => {
+            return `» **Name:** ${value.name}\n» **Description:** ${value.description}`;
+          })
+          .join("\n\n");
 
         const embed = new EmbedBuilder()
-        .setAuthor({ name: interaction.user.username, iconURL: interaction.user.displayAvatarURL() })
-        .setDescription(`${commands}`)
-        .setColor('LuminousVividPink')
-        .setTimestamp();
+          .setAuthor({
+            name: interaction.user.username,
+            iconURL: interaction.user.displayAvatarURL(),
+          })
+          .setDescription(`${commands}`)
+          .setColor("LuminousVividPink")
+          .setTimestamp();
 
-        return interaction.update({ embeds: [embed] })
+        return interaction.update({ embeds: [embed] });
       } else if (interaction.values[0] === "test") {
-        const command = client.applicationCommands.filter(value => value.data.name === "test").get('test');
-        const commands = command.data.options.map((value) => {
-          return `» **Name:** ${value.name}\n» **Description:** ${value.description}`;
-        }).join('\n\n');
+        const command = client.applicationCommands
+          .filter((value) => value.data.name === "test")
+          .get("test");
+        const commands = command.data.options
+          .map((value) => {
+            return `» **Name:** ${value.name}\n» **Description:** ${value.description}`;
+          })
+          .join("\n\n");
 
         const embed = new EmbedBuilder()
-        .setAuthor({ name: interaction.user.username, iconURL: interaction.user.displayAvatarURL() })
-        .setDescription(`${commands}`)
-        .setColor('LuminousVividPink')
-        .setTimestamp();
+          .setAuthor({
+            name: interaction.user.username,
+            iconURL: interaction.user.displayAvatarURL(),
+          })
+          .setDescription(`${commands}`)
+          .setColor("LuminousVividPink")
+          .setTimestamp();
+
+        return interaction.update({ embeds: [embed] });
+      }
+    } else if (interaction.customId === "ab-m_commands.category") {
+      if (interaction.values[0] === "bot") {
+        const command = client.commands
+          .filter((value) => value.category === "bot")
+          .map((value) => {
+            return `» **Name:** ${value.name}\n» **Description:** ${value.description ? value.description : null}`;
+          })
+          .join("\n\n");
+
+        const embed = new EmbedBuilder()
+          .setAuthor({
+            name: interaction.user.username,
+            iconURL: interaction.user.displayAvatarURL(),
+          })
+          .setDescription(`${command}`)
+          .setColor("LuminousVividPink")
+          .setTimestamp();
 
         return interaction.update({ embeds: [embed] });
       }

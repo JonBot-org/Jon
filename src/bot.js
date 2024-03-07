@@ -11,6 +11,7 @@ const {
   connectMongoDB,
 } = require("./lib/functions");
 const process = require("node:process");
+const logger = require("jon-lib").Logger;
 
 const client = new Client({
   intents: [
@@ -26,6 +27,14 @@ const client = new Client({
 
 client.applicationCommands = new Collection();
 client.commands = new Collection();
+
+process.on("uncaughtException", (error, origin) => {
+  console.error(origin, error);
+});
+
+process.on("unhandledRejection", (reason, promise) => {
+  console.error(reason, promise);
+});
 
 handleEvents(client);
 handleCommands(client);

@@ -74,9 +74,11 @@ module.exports.execute = async (old, channel, client) => {
 
   if (data.channel_config.enabled) {
     if (!data.channel_config.cid) return;
-    const loggingChannel = await channel.guild.channels.fetch(data.channel_config.cid);
+    const loggingChannel = await channel.guild.channels.fetch(
+      data.channel_config.cid,
+    );
     if (loggingChannel) {
-      loggingChannel.send({ embeds: [embed] })
+      loggingChannel.send({ embeds: [embed] });
     }
   }
 };

@@ -35,11 +35,13 @@ module.exports.execute = async (channel) => {
     .setColor("DarkOrange")
     .setTimestamp();
 
-    if (data.channel_config.enabled) {
-      if (!data.channel_config.cid) return;
-      const loggingChannel = await channel.guild.channels.fetch(data.channel_config.cid);
-      if (loggingChannel) {
-        loggingChannel.send({ embeds: [embed] });
-      }
+  if (data.channel_config.enabled) {
+    if (!data.channel_config.cid) return;
+    const loggingChannel = await channel.guild.channels.fetch(
+      data.channel_config.cid,
+    );
+    if (loggingChannel) {
+      loggingChannel.send({ embeds: [embed] });
     }
+  }
 };

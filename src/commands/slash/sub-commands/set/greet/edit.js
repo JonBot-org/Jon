@@ -1,31 +1,15 @@
 const {
   EmbedBuilder,
-  Colors,
-  ActionRowBuilder,
-  ButtonBuilder,
-  ButtonStyle,
-  ComponentType,
+  Colors
 } = require("discord.js");
 const guilds = require("../../../../../db/guilds");
-const { isImage } = require("../../../../../lib/functions");
+const { isImage, emojis } = require("../../../../../lib/functions");
 
 /**
  * @param {import('discord.js').ChatInputCommandInteraction} interaction
- * @param {import('discord.js').Client} client
  */
-module.exports = async (interaction, client) => {
-  await interaction.deferReply();
-  const { guild, options, member } = interaction;
-
-  const loadingEmbed = new EmbedBuilder()
-    .setAuthor({
-      name: member.user.username,
-      iconURL: member.user.displayAvatarURL(),
-    })
-    .setDescription(`Building message...`)
-    .setColor("DarkPurple")
-    .setTimestamp();
-  interaction.editReply({ embeds: [loadingEmbed] });
+module.exports = async (interaction) => {
+  const { guild, options, user } = interaction;
 
   const message = options.getString("message");
   const description = options.getString("description");
@@ -35,62 +19,35 @@ module.exports = async (interaction, client) => {
   const color = options.getString("color");
   const timestamp = options.getBoolean("timestamp") || false;
 
-  const errorEmbed = new EmbedBuilder()
-    .setAuthor({
-      name: member.user.username,
-      iconURL: member.user.displayAvatarURL(),
-    })
+  const ErrorEmbed = new EmbedBuilder()
+    .setAuthor({ name: user.username, iconURL: user.displayAvatarURL() })
+    .setDescription(`${emojis.fail} | Option validation failed.\n`)
     .setColor("DarkVividPink")
     .setTimestamp();
 
   if (!message && !description) {
-    return interaction.editReply({
-      embeds: [
-        errorEmbed.setDescription(
-          `Message build failed.\nThe \`message\` or \`description\` option has to be present.\n- **Use </vars:> to see a list of variables you can use.**`,
-        ),
-      ],
-    });
+    ErrorEmbed.data.description += `» **Error:**\n\- One option from \`message\` or \`description\` has to be provided. `;
+    return interaction.reply({ embeds: [ErrorEmbed], ephemeral: true });
   }
 
   if (color && !description) {
-    return interaction.editReply({
-      embeds: [
-        errorEmbed.setDescription(
-          `Message build failed.\nIf you want to use an embed the \`description\` option is required.`,
-        ),
-      ],
-    });
+    ErrorEmbed.data.description += `» **Error:**\n\- \`color\` option found but \`description\` not found, if you want to use a embed you need a description. `;
+    return interaction.reply({ embeds: [ErrorEmbed], ephemeral: true });
   }
 
   if (title && !description) {
-    return interaction.editReply({
-      embeds: [
-        errorEmbed.setDescription(
-          `Message build failed.\nIf you want to use an embed the \`description\` option is required`,
-        ),
-      ],
-    });
+    ErrorEmbed.data.description += `» **Error:**\n\- \`title\` option ,found but \`description\` not found, if you want to use a embed you need a description. `;
+    return interaction.reply({ embeds: [ErrorEmbed], ephemeral: true });
   }
 
   if (author_name && !description) {
-    return interaction.editReply({
-      embeds: [
-        errorEmbed.setDescription(
-          `Message build failed.\nIf you want to use an embed the \`description\` option is required.`,
-        ),
-      ],
-    });
+    ErrorEmbed.data.description += `» **Error:**\n\- \`author_name\` option found but \`description\` not found, if you want to use a embed you need a description. `;
+    return interaction.reply({ embeds: [ErrorEmbed], ephemeral: true });
   }
 
   if (author_icon && !author_name) {
-    return interaction.editReply({
-      embeds: [
-        errorEmbed.setDescription(
-          `Message build failed.\nIf you want to use author_icon you have to use author_name | **author_name is not given.**\n- **Use </vars:> to see a list of variables you can use.**`,
-        ),
-      ],
-    });
+    ErrorEmbed.data.description += `» **Error**\n\- \`author_icon\` option found but \`author_name\` not found, if you want to use author field authorName is required. `;
+    return interaction.reply({ embeds: [ErrorEmbed], ephemeral: true });
   }
 
   if (
@@ -98,25 +55,16 @@ module.exports = async (interaction, client) => {
     !isImage(author_icon) &&
     !["{user_avatar}", "{server_icon}"].includes(author_icon)
   ) {
-    return interaction.editReply({
-      embeds: [
-        errorEmbed.setDescription(
-          "Message build failed.\n`author_icon` is invalid.\n- Valid inputs are: A url, {user_avatar} or {server_icon}",
-        ),
-      ],
-    });
+    ErrorEmbed.data.description += `» **Error:**\n\- \`author_icon\` is not formatted correctly.\n» **Formats:** links & vars`;
+    return interaction.reply({ embeds: [ErrorEmbed], ephemeral: true });
   }
 
   if (color && !Colors[color]) {
-    return interaction.editReply({
-      embeds: [
-        errorEmbed.setDescription(
-          `Message build failed.\n\`color\` option is invalid.\nSee a list of colors you can use [here](https://gist.github.com/thomasbnt/b6f455e2c7d743b796917fa3c205f812)`,
-        ),
-      ],
-    });
+    ErrorEmbed.data.description += `» **Error:**\n\- \`color\` option is not a valid color.\n» **Colors:** Red, Green, Blue, Blurple & more...`;
+    return interaction.reply({ embeds: [ErrorEmbed], ephemeral: true });
   }
 
+  await interaction.deferReply();
   const data = await guilds.findOne({ id: guild.id });
 
   if (data && data.configurations.greet.enabled) {
@@ -129,102 +77,26 @@ module.exports = async (interaction, client) => {
     data.configurations.greet.timestamp = timestamp ? "YES" : "NO";
     await data.save();
 
-    const completeEmbed = new EmbedBuilder()
+    const CompleteEmbed = new EmbedBuilder()
       .setAuthor({
-        name: member.user.username,
-        iconURL: member.user.displayAvatarURL(),
+        name: user.username,
+        iconURL: user.displayAvatarURL(),
       })
-      .setDescription("Edited the greet message.")
-      .setColor(color ? Colors[color] : "LuminousVividPink")
+      .setDescription(`${emojis.success} | **Edited the greet message.**`)
+      .setColor("LuminousVividPink")
       .setTimestamp();
 
-    return interaction.editReply({ embeds: [completeEmbed] });
+    return interaction.editReply({ embeds: [CompleteEmbed] });
   } else {
-    const NoConfig = new EmbedBuilder()
+    const GreetDisabledEmbed = new EmbedBuilder()
       .setAuthor({
-        name: member.user.username,
-        iconURL: member.user.displayAvatarURL(),
+        name: user.username,
+        iconURL: user.displayAvatarURL(),
       })
-      .setDescription(
-        `This server has greet module disabled. Do you want to enable greet module?`,
-      )
-      .setColor(color ? Colors[color] : "LuminousVividPink")
+      .setDescription(`${emojis.fail} | **Greet module is disabled in this server.**`)
+      .setColor("LuminousVividPink")
       .setTimestamp();
 
-    const confirmRow = new ActionRowBuilder().addComponents(
-      new ButtonBuilder()
-        .setCustomId("set.edit.yes")
-        .setLabel("Yes")
-        .setStyle(ButtonStyle.Success),
-      new ButtonBuilder()
-        .setCustomId("set.edit.no")
-        .setLabel("No")
-        .setStyle(ButtonStyle.Danger),
-    );
-
-    const message = await interaction.editReply({
-      embeds: [NoConfig],
-      components: [confirmRow],
-    });
-
-    const collector = message.createMessageComponentCollector({
-      filter: (i) => i.user.id === interaction.user.id,
-      componentType: ComponentType.Button,
-      maxComponents: 1,
-    });
-
-    collector.on("collect", async (int) => {
-      if (int.customId === "set.edit.no") {
-        const cancelEmbed = new EmbedBuilder()
-          .setAuthor({
-            name: int.user.username,
-            iconURL: int.user.displayAvatarURL(),
-          })
-          .setDescription("Canceled the process.")
-          .setColor("DarkPurple")
-          .setTimestamp();
-        int.update({ embeds: [cancelEmbed], components: [] });
-        return collector.stop("PS");
-      }
-
-      await int.deferUpdate();
-      await guilds.create({
-        id: guild.id,
-        configurations: {
-          greet: {
-            enabled: true,
-            channel: int.channel.id,
-            message: message ? message : null,
-            description: description ? description : null,
-            title: title ? title : null,
-            author_name: author_name ? author_name : null,
-            author_icon: author_icon ? author_icon : null,
-            color: color ? color : null,
-            timestamp: timestamp ? "YES" : "NO",
-          },
-        },
-      });
-
-      const completeEmbed = new EmbedBuilder()
-        .setAuthor({
-          name: int.user.username,
-          iconURL: int.user.displayAvatarURL(),
-        })
-        .setDescription(
-          `Enabled greet module and edited the message. \`channel:\` ${int.channel}\n- **To change the channel use: </set greet enable:1209442876090617856>**`,
-        )
-        .setColor(color ? Colors[color] : "LuminousVividPink")
-        .setTimestamp();
-
-      int.editReply({ embeds: [completeEmbed], components: [] });
-      return collector.stop("PS");
-    });
-
-    collector.on("end", (collected, reason) => {
-      if (reason === "PS") return;
-      if (reason === "time") {
-        interaction.editReply({ components: [] });
-      }
-    });
+    return interaction.editReply({ embeds: [GreetDisabledEmbed] });
   }
 };
