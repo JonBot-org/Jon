@@ -1,29 +1,26 @@
 {
   "name": "jon",
-  "version": "2.0.7",
-  "description": "Jon is a general utility Discord bot to fix all ya problems!",
-  "versionFile": "v2/2024-02-17-204.js",
-  "main": "index.js",
+  "version": "3.0.0",
+  "description": "",
+  "main": "bot",
   "scripts": {
-    "start": "node .",
-    "test": "echo no"
+    "start": "tsc && node ./dist/bot.js",
+    "build": "tsc",
+    "lint": "eslint ./src/"
   },
   "author": "Rayaan",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
-    "axios": "^1.6.7",
-    "chalk": "^4.1.2",
-    "convert-time-string": "^0.0.2",
+    "@typescript-eslint/eslint-plugin": "^7.1.1",
+    "@typescript-eslint/parser": "^7.1.1",
+    "chalk": "^2.4.2",
     "discord.js": "^14.14.1",
-    "dotenv": "^16.4.1",
-    "jon-lib": "^1.0.0",
+    "dotenv": "^16.4.5",
+    "eslint": "^8.57.0",
     "moment": "^2.30.1",
-    "mongoose": "^8.1.1",
-    "pretty-ms": "^7.0.1"
+    "mongoose": "^8.2.1"
   },
   "devDependencies": {
-    "eslint": "^8.56.0",
-    "eslint-plugin-react": "^7.33.2",
-    "prettier": "3.2.5"
+    "typescript": "^5.4.2"
   }
 }

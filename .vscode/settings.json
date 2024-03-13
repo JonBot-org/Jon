@@ -1,14 +1,6 @@
 {
   "editor.minimap.enabled": false,
-  "editor.defaultFoldingRangeProvider": "esbenp.prettier-vscode",
-  "editor.suggest.showValues": true,
-  "editor.suggest.showWords": false,
-  "[javascript]": {
-    "editor.defaultFoldingRangeProvider": "esbenp.prettier-vscode",
-    "editor.formatOnSave": true,
-    "editor.codeActionsOnSave": {
-      "source.fixAll": "explicit",
-      "source.organizeImports": "explicit"
-    }
-  }
+  "editor.defaultFormatter": "rvest.vs-code-prettier-eslint",
+  "editor.formatOnSave": true,
+  "editor.suggest.showWords": false
 }
