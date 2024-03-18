@@ -5,20 +5,48 @@ export class Logger {
   /**
    * Log stuff.
    */
-  public constructor(time?: boolean) {
-    if (!time) console.log("Logger");
+  public constructor() {
   }
 
   public info(str: string) {
     console.log(
       chalk.redBright(`[${this.time()}]`),
       chalk.yellowBright("::"),
-      chalk.greenBright(str),
+      str
     );
   }
 
+  public debug(message: string) {
+    console.log(
+      chalk.redBright(`[${this.time()}]`),
+      chalk.yellowBright('::'),
+      chalk.grey(message)
+    )
+  }
+
+  public error(error: Error | unknown, level = 0) {
+    const log = () => {
+      console.log(
+        chalk.redBright(`[${this.time()}]`),
+        chalk.yellowBright('::'),
+        error
+      )
+    }
+
+
+    if (level === 0) {
+      log();
+      return;
+    } else {
+      log();
+      // Do more here.
+      return;
+    }
+
+    
+  }
+
   public time(): string {
-    const date = new Date();
     return `${moment().format("M/D h:mm")}`;
   }
 }

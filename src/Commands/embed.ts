@@ -4,7 +4,7 @@ import {
   SlashCommandBuilder,
   codeBlock,
 } from "discord.js";
-import { CommandOptions, handleSubcommands } from "../lib/index.m";
+import { CommandOptions, Logger, handleSubcommands } from "../lib/index.m";
 
 export const command: CommandOptions = {
   application: {
@@ -68,7 +68,7 @@ export const command: CommandOptions = {
     const status = await handleSubcommands(interaction);
 
     if (!status.success) {
-      console.error(status.error);
+      Logger.prototype.error(status.error, 1);
 
       const ErrorEmbed = new EmbedBuilder()
         .setAuthor({

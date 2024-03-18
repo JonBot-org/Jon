@@ -32,7 +32,7 @@ export class JonBot extends Client {
       await mongoose.connect(process.env.MONGOOSE_URI!);
       this.logger.info("Connected To MongoDB");
     } catch (error) {
-      console.error(error);
+      this.logger.error(error, 1);
     }
   }
 

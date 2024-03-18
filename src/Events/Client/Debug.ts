@@ -1,5 +1,5 @@
 import { Events } from "discord.js";
-import { EventConfigOptions } from "../../lib/index.m";
+import { EventConfigOptions, Logger } from "../../lib/index.m";
 
 export const config: EventConfigOptions = {
   name: Events.Debug,
@@ -7,5 +7,5 @@ export const config: EventConfigOptions = {
 };
 
 export function run(message: string) {
-  console.info(message);
+  Logger.prototype.debug(message);
 }

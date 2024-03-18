@@ -92,7 +92,6 @@ async function handleStatusEnableData(
   interaction: ChannelSelectMenuInteraction,
   channelID: string,
 ) {
-  console.log(channelID);
   await Config.findOneAndUpdate(
     {
       id: interaction.guildId,

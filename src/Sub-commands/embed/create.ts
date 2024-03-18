@@ -9,7 +9,7 @@ import {
   InteractionCollector,
 } from "discord.js";
 import { Embed } from "../../Mongo/Models/Embed";
-import { Collection } from "mongoose";
+import { Logger } from "../../lib/index.m";
 
 export async function run(interaction: ChatInputCommandInteraction) {
   const name = interaction.options.getString("name", true);
@@ -63,7 +63,7 @@ export async function run(interaction: ChatInputCommandInteraction) {
 
   collector.on("collect", async (int) => {
     if (int.customId.split(".")[0] === "confirm_no") {
-      interaction.deleteReply().catch(console.error);
+      interaction.deleteReply().catch((reason) => Logger.prototype.error(reason));
     } else if (int.customId.split(".")[0] === "confirm_yes") {
       await createEmbedData(int, name, collector);
     }
