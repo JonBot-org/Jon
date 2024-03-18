@@ -89,10 +89,15 @@ async function createEmbedData(
 
   if (data) {
     const embedAlreadyExist = new EmbedBuilder()
-    .setAuthor({ name: interaction.user.username, iconURL: interaction.user.displayAvatarURL() })
-    .setDescription(`**Embed name is already in use. \`(${name})\`**\n> Embed names have to be unique.`)
-    .setColor('Orange')
-    .setTimestamp();
+      .setAuthor({
+        name: interaction.user.username,
+        iconURL: interaction.user.displayAvatarURL(),
+      })
+      .setDescription(
+        `**Embed name is already in use. \`(${name})\`**\n> Embed names have to be unique.`,
+      )
+      .setColor("Orange")
+      .setTimestamp();
 
     interaction.editReply({ embeds: [embedAlreadyExist] });
     return c.stop();
@@ -102,13 +107,13 @@ async function createEmbedData(
       guild: interaction.guildId,
       user: {
         id: interaction.user.id,
-        createdAt: `${Date.now()}`
+        createdAt: `${Date.now()}`,
       },
 
-      author: { name: '{username}', iconURL: '{useravatar}' },
-      title: '{username}',
+      author: { name: "{username}", iconURL: "{useravatar}" },
+      title: "{username}",
       timestamp: true,
-      footer: { text: 'Template Embed' }
+      footer: { text: "Template Embed" },
     });
   }
 

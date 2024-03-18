@@ -6,6 +6,8 @@ const schema = new mongoose.Schema({
   greet: {
     enabled: Boolean,
     channel: String,
+    content: String,
+    embed: String,
   },
 });
 

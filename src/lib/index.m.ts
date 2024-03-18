@@ -1,9 +1,7 @@
 import {
-  APIEmbedAuthor,
   ChatInputCommandInteraction,
   ContextMenuCommandBuilder,
   Guild,
-  HexColorString,
   Message,
   MessageContextMenuCommandInteraction,
   PermissionsString,
@@ -46,12 +44,12 @@ export interface SubCommandFunctionR {
 }
 
 export interface VariablesFunction {
-  user: User,
-  guild: Guild
+  user: User;
+  guild: Guild;
 }
 
-export * from './Utils/time';
-export * from './Utils/embed'
+export * from "./Utils/time";
+export * from "./Utils/embed";
 export * from "./Utils/Logger";
 export * from "./Utils/commands";
 export * from "./Client/Jon";

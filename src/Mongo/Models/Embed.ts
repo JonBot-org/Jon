@@ -5,7 +5,7 @@ const embed = new mongoose.Schema({
   guild: String,
   user: {
     id: String,
-    createdAt: String
+    createdAt: String,
   },
 
   author: Object,
@@ -14,7 +14,7 @@ const embed = new mongoose.Schema({
   image: String,
   thumbnail: String,
   timestamp: Boolean,
-  footer: Object
-})
+  footer: Object,
+});
 
 export const Embed = mongoose.model("embed", embed);

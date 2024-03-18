@@ -1,4 +1,9 @@
-import { EmbedBuilder, PermissionFlagsBits, SlashCommandBuilder, codeBlock } from "discord.js";
+import {
+  EmbedBuilder,
+  PermissionFlagsBits,
+  SlashCommandBuilder,
+  codeBlock,
+} from "discord.js";
 import { CommandOptions, handleSubcommands } from "../lib/index.m";
 
 export const command: CommandOptions = {
@@ -22,35 +27,35 @@ export const command: CommandOptions = {
       })
       .addSubcommand((input) => {
         return input
-        .setName('edit')
-        .setDescription('Edit a embed.')
-        .addStringOption((option) => {
-          return option
-          .setName('name')
-          .setDescription('The name of the embed you want to edit.')
-          .setRequired(true)
-        })
+          .setName("edit")
+          .setDescription("Edit a embed.")
+          .addStringOption((option) => {
+            return option
+              .setName("name")
+              .setDescription("The name of the embed you want to edit.")
+              .setRequired(true);
+          });
       })
       .addSubcommandGroup((input) => {
         return input
-        .setName('get')
-        .setDescription('More embed commands.')
-        .addSubcommand((command) => {
-          return command
-          .setName('all')
-          .setDescription('Get all the embeds belonging to this guild.')
-        })
-        .addSubcommand((command) => {
-          return command
-          .setName('info')
-          .setDescription('Get information on a specific embed.')
-          .addStringOption((option) => {
-            return option
-            .setName('name')
-            .setDescription('The name of the embed.')
+          .setName("get")
+          .setDescription("More embed commands.")
+          .addSubcommand((command) => {
+            return command
+              .setName("all")
+              .setDescription("Get all the embeds belonging to this guild.");
           })
-        })
-      })
+          .addSubcommand((command) => {
+            return command
+              .setName("info")
+              .setDescription("Get information on a specific embed.")
+              .addStringOption((option) => {
+                return option
+                  .setName("name")
+                  .setDescription("The name of the embed.");
+              });
+          });
+      }),
   },
 
   message: {

@@ -1,4 +1,9 @@
-import { SlashCommandBuilder, EmbedBuilder, codeBlock, PermissionFlagsBits } from "discord.js";
+import {
+  SlashCommandBuilder,
+  EmbedBuilder,
+  codeBlock,
+  PermissionFlagsBits,
+} from "discord.js";
 import { CommandOptions, handleSubcommands } from "../lib/index.m";
 
 export const command: CommandOptions = {
@@ -20,11 +25,17 @@ export const command: CommandOptions = {
           })
           .addSubcommand((command) => {
             return command
-              .setName("embed")
-              .setDescription("Configure the embed to send.")
+              .setName("edit")
+              .setDescription("Edit the greet settings.")
               .addStringOption((option) => {
                 return option
-                  .setName("name")
+                  .setName("message")
+                  .setDescription("The content to display.")
+                  .setMaxLength(20 * 100);
+              })
+              .addStringOption((option) => {
+                return option
+                  .setName("embed")
                   .setDescription("The embed name. E.g: my_embed");
               });
           });
