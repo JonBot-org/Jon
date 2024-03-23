@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const schema = new mongoose.Schema({
+const ConfigSchema = new mongoose.Schema({
   id: String,
 
   greet: {
@@ -11,4 +11,4 @@ const schema = new mongoose.Schema({
   },
 });
 
-export default mongoose.model("config", schema);
+export default mongoose.model("config", ConfigSchema);

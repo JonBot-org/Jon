@@ -7,5 +7,16 @@ export const config: EventConfigOptions = {
 };
 
 export function run(client: JonBot) {
-  client.logger.info(`Ready! ${client.user?.username}`);
+  if (client.user?.id === process.env.PDCI) {
+    process.env.NODE_ENV = "production";
+  } else {
+    process.env.NODE_ENV = "development";
+  };
+
+
+  client.logger.info(
+    `Ready! ${client.user?.username} - ${process.env.NODE_ENV}`
+  );
+
+  client.handleCommands();
 }

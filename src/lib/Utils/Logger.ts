@@ -1,5 +1,7 @@
 import chalk from "chalk";
+import { EmbedBuilder, WebhookClient, codeBlock } from "discord.js";
 import moment from "moment";
+import { JonBot } from "../index.m";
 
 export class Logger {
   /**
@@ -10,27 +12,27 @@ export class Logger {
 
   public info(str: string) {
     console.log(
-      chalk.redBright(`[${this.time()}]`),
-      chalk.yellowBright("::"),
+      chalk.green("[INFO] ->"),
+      chalk.redBright(`${this.time()}:`),
       str
     );
   }
 
   public debug(message: string) {
     console.log(
-      chalk.redBright(`[${this.time()}]`),
-      chalk.yellowBright('::'),
-      chalk.grey(message)
-    )
+      chalk.whiteBright("[DEBUG] ->"),
+      chalk.redBright(`${this.time()}:`),
+      message
+    );
   }
 
   public error(error: Error | unknown, level = 0) {
     const log = () => {
       console.log(
-        chalk.redBright(`[${this.time()}]`),
-        chalk.yellowBright('::'),
+        chalk.yellowBright("[ERROR] ->"),
+        chalk.redBright(`${this.time()}:`),
         error
-      )
+      );
     }
 
 
@@ -39,7 +41,20 @@ export class Logger {
       return;
     } else {
       log();
-      // Do more here.
+      if (process.env.NODE_ENV === "development") return;
+      if (process.env.LOGGING_WEBHOOK === undefined) return;
+
+      const webhook = new WebhookClient({ url: process.env.LOGGING_WEBHOOK });
+      const embed = new EmbedBuilder()
+        .setDescription(
+          `**Logged Error!**\n- Level: ${level}\n- Logged Time: ${this.time()}\n- Error:\n${codeBlock(
+            `${error}`
+          )}`
+        )
+        .setColor("Orange")
+        .setTimestamp();
+
+      webhook.send({ embeds: [embed], username: "Jon" }).catch(console.error);
       return;
     }
 
@@ -47,6 +62,6 @@ export class Logger {
   }
 
   public time(): string {
-    return `${moment().format("M/D h:mm")}`;
+    return `${moment().format("D/h:mn:ss")}`;
   }
 }

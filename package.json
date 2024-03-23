@@ -4,9 +4,7 @@
   "description": "",
   "main": "bot",
   "scripts": {
-    "start": "tsc && node ./dist/bot.js",
-    "build": "tsc",
-    "lint": "eslint ./src/"
+    "start": "tsc && node ./dist/src/bot.js"
   },
   "author": "Rayaan",
   "license": "MIT",

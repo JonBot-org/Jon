@@ -16,7 +16,7 @@ export async function run(interaction: ChatInputCommandInteraction) {
       iconURL: interaction.user.displayAvatarURL(),
     })
     .setDescription(
-      `**Current greet settings.**\n- **Enabled:** ${(data ? true : false) ? (data?.greet ? true : false) : false}\n- **Channel:** ${data?.greet?.channel ? data.greet.channel : "No channel configured."}`,
+      `**Current greet settings.**\n- **Enabled:** ${(data ? true : false) ? (data?.greet ? true : false) : false}\n- **Channel:** ${data?.greet?.channel ? data.greet.channel : "None"}`,
     )
     .setColor("Blurple")
     .setTimestamp();

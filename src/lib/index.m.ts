@@ -1,5 +1,6 @@
 import {
   ChatInputCommandInteraction,
+  ClientEvents,
   ContextMenuCommandBuilder,
   Guild,
   Message,
@@ -11,7 +12,7 @@ import {
 } from "discord.js";
 
 export interface EventConfigOptions {
-  name: string;
+  name: keyof ClientEvents | string;
   once?: boolean;
 }
 

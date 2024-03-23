@@ -1,6 +1,8 @@
 {
   "editor.minimap.enabled": false,
-  "editor.defaultFormatter": "rvest.vs-code-prettier-eslint",
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "typescript.format.enable": true,
+  "editor.formatOnSaveMode": "modificationsIfAvailable",
   "editor.formatOnSave": true,
   "editor.suggest.showWords": false
 }

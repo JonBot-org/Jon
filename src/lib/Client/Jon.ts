@@ -9,12 +9,12 @@ import {
 import fs from "node:fs";
 import { CommandOptions, Logger } from "../index.m";
 import mongoose from "mongoose";
+import { formatPath } from "../Utils/utils";
 
 export class JonBot extends Client {
   constructor(options: ClientOptions) {
     super(options);
     this.handleEvents();
-    this.handleCommands();
     this.connectMongo();
   }
 
@@ -29,15 +29,15 @@ export class JonBot extends Client {
   private async connectMongo() {
     try {
       this.logger.info("Connecting To MongoDB.");
-      await mongoose.connect(process.env.MONGOOSE_URI!);
+      await mongoose.connect(process.env.MONGO_URI!);
       this.logger.info("Connected To MongoDB");
     } catch (error) {
       this.logger.error(error, 1);
     }
   }
 
-  private async handleCommands() {
-    for (const file of fs.readdirSync("./src/Commands/")) {
+  public async handleCommands() {
+    for (const file of fs.readdirSync(formatPath('/src/Commands/'))) {
       const object = await import(`../../Commands/${file.split(".")[0]}`);
       const command = object.command;
 
@@ -50,15 +50,15 @@ export class JonBot extends Client {
         this.messageCommands.set(command.application.data.name, command);
       }
     }
-
+   
     this.rest.put(Routes.applicationCommands(process.env.CLIENT_ID!), {
       body: this.applicationCommandsData,
     });
   }
 
-  private async handleEvents() {
-    for (const folder of fs.readdirSync("./src/Events/")) {
-      for (const file of fs.readdirSync(`./src/Events/${folder}`)) {
+  public async handleEvents() {
+    for (const folder of fs.readdirSync(formatPath('./src/Events/'))) {
+      for (const file of fs.readdirSync(formatPath(`./src/Events/${folder}`))) {
         const event = await import(
           `../../Events/${folder}/${file.split(".")[0]}`
         );

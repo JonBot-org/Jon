@@ -3,10 +3,12 @@ import {
   ButtonBuilder,
   ButtonStyle,
   EmbedBuilder,
+  GuildMember,
   Interaction,
 } from "discord.js";
 import { EventConfigOptions, JonBot } from "../../lib/index.m";
 import Guilds from "../../Mongo/Models/Guilds";
+import { Bot } from "../../Mongo/Models/Bot";
 
 export const config: EventConfigOptions = {
   name: "interactionCreate",
@@ -17,6 +19,10 @@ export async function run(interaction: Interaction) {
   const client = interaction.client as JonBot;
 
   if (interaction.isChatInputCommand()) {
+    await Bot.findOneAndUpdate({
+      _i: process.env.MIP
+    }, { $inc: { commandsExecuted: 1 } }, { upsert: true }).catch(console.error)
+
     const command = client.applicationCommands.get(interaction.commandName);
 
     if (!command) {
@@ -61,6 +67,9 @@ export async function run(interaction: Interaction) {
     }
 
     if (command.chatInputRun) {
+      if (interaction.member instanceof GuildMember) {
+        client.emit('guildMemberAdd', interaction.member);
+      }
       command.chatInputRun(interaction);
     }
   }

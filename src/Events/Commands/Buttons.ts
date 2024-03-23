@@ -1,17 +1,16 @@
 import {
-  ActionRow,
   ActionRowBuilder,
   EmbedBuilder,
   Events,
   Interaction,
   ModalBuilder,
   TextInputBuilder,
-  TextInputComponent,
   TextInputStyle,
 } from "discord.js";
 import { EventConfigOptions, JonBot } from "../../lib/index.m";
 import Guilds from "../../Mongo/Models/Guilds";
 import { Embed } from "../../Mongo/Models/Embed";
+import { Bot } from "../../Mongo/Models/Bot";
 
 export const config: EventConfigOptions = {
   name: Events.InteractionCreate,
@@ -22,6 +21,10 @@ export async function run(interaction: Interaction) {
   const client = interaction.client as JonBot;
 
   if (interaction.isButton()) {
+    await Bot.findOneAndUpdate({
+    _i: process.env.MIP,
+  }, { $inc: { buttonsClicked: 1 } }, { upsert: true }).catch(console.error);
+
     const customID = interaction.customId;
     if (customID.split("-")[0] != "u") return;
 
@@ -50,7 +53,10 @@ export async function run(interaction: Interaction) {
 
       return interaction.editReply({ embeds: [embed], components: [] });
     } else if (customID.split(".")[0] === "u-accept_stdb_no") {
-      interaction.message.delete().catch();
+      interaction.reply({
+        ephemeral: true,
+        content: `Okay, I won't store data.`,
+      });
     } else if (customID.split(".")[0] === "u-embed_edit_body") {
       const data = await Embed.findOne({ name: customID.split(".").at(1) });
 
@@ -72,6 +78,7 @@ export async function run(interaction: Interaction) {
             .setLabel("Description")
             .setStyle(TextInputStyle.Paragraph)
             .setPlaceholder("The embed description to display.")
+            .setMaxLength(4000)
             .setValue(data.description ? data.description : ""),
         );
       const title = new ActionRowBuilder<TextInputBuilder>().addComponents(
@@ -80,6 +87,7 @@ export async function run(interaction: Interaction) {
           .setLabel("Title")
           .setStyle(TextInputStyle.Short)
           .setPlaceholder("The embed title to display.")
+          .setMaxLength(256)
           .setRequired(false)
           .setValue(data.title ? data.title : ""),
       );
@@ -89,6 +97,7 @@ export async function run(interaction: Interaction) {
           .setLabel("Image")
           .setStyle(TextInputStyle.Short)
           .setPlaceholder("An image url.")
+          .setMaxLength(500)
           .setRequired(false)
           .setValue(data.image ? data.image : ""),
       );
@@ -98,6 +107,7 @@ export async function run(interaction: Interaction) {
           .setLabel("Thumbnail")
           .setStyle(TextInputStyle.Short)
           .setPlaceholder("An image url")
+          .setMaxLength(500)
           .setRequired(false)
           .setValue(data.thumbnail ? data.thumbnail : ""),
       );
@@ -124,6 +134,7 @@ export async function run(interaction: Interaction) {
             .setCustomId("author_name")
             .setLabel("Author Name")
             .setPlaceholder("The name of the author to display.")
+            .setMaxLength(256)
             .setStyle(TextInputStyle.Short)
             .setRequired(false)
             .setValue(data.author.name ? data.author.name : ""),
@@ -135,6 +146,7 @@ export async function run(interaction: Interaction) {
             .setCustomId("author_icon")
             .setLabel("Author Icon")
             .setPlaceholder("The icon of the author to display.")
+            .setMaxLength(500)
             .setStyle(TextInputStyle.Short)
             .setRequired(false)
             .setValue(data.author.iconURL ? data.author.iconURL : ""),
@@ -146,6 +158,7 @@ export async function run(interaction: Interaction) {
             .setCustomId("footer_text")
             .setLabel("Footer Text")
             .setPlaceholder("The text of the footer to display.")
+            .setMaxLength(2048)
             .setStyle(TextInputStyle.Short)
             .setRequired(false)
             .setValue(data.footer.text ? data.footer.text : ""),
@@ -157,6 +170,7 @@ export async function run(interaction: Interaction) {
             .setCustomId("footer_icon")
             .setLabel("Footer Icon")
             .setPlaceholder("The icon of the footer to display.")
+            .setMaxLength(500)
             .setStyle(TextInputStyle.Short)
             .setRequired(false)
             .setValue(data.footer.iconURL ? data.footer.iconURL : ""),
@@ -166,8 +180,9 @@ export async function run(interaction: Interaction) {
         new TextInputBuilder()
           .setCustomId("timestamp")
           .setLabel("Timestamp (true/false)")
-          .setPlaceholder("Should the embed have timestamp?")
+          .setPlaceholder("Should the embed have a timestamp?")
           .setStyle(TextInputStyle.Short)
+          .setMaxLength(5)
           .setRequired(false)
           .setValue(`${data.timestamp}`),
       );
