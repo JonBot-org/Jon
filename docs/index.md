@@ -5,7 +5,7 @@
 # Documents:
 - Commands: https://jonbot-org.github.io/Jon/commands/
 - Configuration Tutorials: https://jonbot-org.github.io/Jon/tutorials/
-- Terms Of Service: https://jonbot-org.github.io/Jon/discord/Termsv0.2
+- Terms Of Service: https://jonbot-org.github.io/Jon/discord/Terms
 - Informations: https://jonbot-org.github.io/Jon/discord/usage_info
 
 **And thats it, have fun using my commands in you're server!** <3
