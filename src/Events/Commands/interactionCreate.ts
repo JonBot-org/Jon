@@ -19,9 +19,13 @@ export async function run(interaction: Interaction) {
   const client = interaction.client as JonBot;
 
   if (interaction.isChatInputCommand()) {
-    await Bot.findOneAndUpdate({
-      _i: process.env.MIP
-    }, { $inc: { commandsExecuted: 1 } }, { upsert: true }).catch(console.error)
+    await Bot.findOneAndUpdate(
+      {
+        _i: process.env.MIP,
+      },
+      { $inc: { commandsExecuted: 1 } },
+      { upsert: true },
+    ).catch(console.error);
 
     const command = client.applicationCommands.get(interaction.commandName);
 
@@ -68,7 +72,7 @@ export async function run(interaction: Interaction) {
 
     if (command.chatInputRun) {
       if (interaction.member instanceof GuildMember) {
-        client.emit('guildMemberAdd', interaction.member);
+        client.emit("guildMemberAdd", interaction.member);
       }
       command.chatInputRun(interaction);
     }

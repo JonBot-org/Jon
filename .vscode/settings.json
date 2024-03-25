@@ -1,8 +1,7 @@
 {
   "editor.minimap.enabled": false,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "typescript.format.enable": true,
-  "editor.formatOnSaveMode": "modificationsIfAvailable",
+  "javascript.format.enable": true,
   "editor.formatOnSave": true,
   "editor.suggest.showWords": false
 }

@@ -21,9 +21,13 @@ export async function run(interaction: Interaction) {
   const client = interaction.client as JonBot;
 
   if (interaction.isButton()) {
-    await Bot.findOneAndUpdate({
-    _i: process.env.MIP,
-  }, { $inc: { buttonsClicked: 1 } }, { upsert: true }).catch(console.error);
+    await Bot.findOneAndUpdate(
+      {
+        _i: process.env.MIP,
+      },
+      { $inc: { buttonsClicked: 1 } },
+      { upsert: true },
+    ).catch(console.error);
 
     const customID = interaction.customId;
     if (customID.split("-")[0] != "u") return;

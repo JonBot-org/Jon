@@ -63,7 +63,9 @@ export async function run(interaction: ChatInputCommandInteraction) {
 
   collector.on("collect", async (int) => {
     if (int.customId.split(".")[0] === "confirm_no") {
-      interaction.deleteReply().catch((reason) => Logger.prototype.error(reason));
+      interaction
+        .deleteReply()
+        .catch((reason) => Logger.prototype.error(reason));
     } else if (int.customId.split(".")[0] === "confirm_yes") {
       await createEmbedData(int, name, collector);
     }

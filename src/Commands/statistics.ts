@@ -18,17 +18,25 @@ export const command: CommandOptions = {
     await interaction.deferReply();
 
     const guilds = interaction.client.guilds.cache.size;
-    const members = interaction.client.guilds.cache.reduce((acc, guild) => acc + guild.memberCount, 0);
+    const members = interaction.client.guilds.cache.reduce(
+      (acc, guild) => acc + guild.memberCount,
+      0,
+    );
     const _data = await Bot.findOne({ _i: process.env.MIP });
     const buttons = _data?.buttonsClicked;
     const commands = _data?.commandsExecuted;
 
     const embed = new EmbedBuilder()
-    .setAuthor({ name: interaction.user.username, iconURL: interaction.user.displayAvatarURL() })
-    .setDescription(`**Stats:**\n- Servers: ${guilds}\n- Users: ${members}\n- Commands Ran: ${commands}\n- Buttons Clicked: ${buttons}`)
-    .setColor('Blurple')
-    .setTimestamp();
+      .setAuthor({
+        name: interaction.user.username,
+        iconURL: interaction.user.displayAvatarURL(),
+      })
+      .setDescription(
+        `**Stats:**\n- Servers: ${guilds}\n- Users: ${members}\n- Commands Ran: ${commands}\n- Buttons Clicked: ${buttons}`,
+      )
+      .setColor("Blurple")
+      .setTimestamp();
 
-    interaction.editReply({ embeds: [embed] })
+    interaction.editReply({ embeds: [embed] });
   },
 };

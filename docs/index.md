@@ -1,8 +1,9 @@
-# Jon 
+# Jon
 
 - Invite me to you're server now! [here](https://discord.com/) :3
 
 # Documents:
+
 - Commands: https://jonbot-org.github.io/Jon/commands/
 - Configuration Tutorials: https://jonbot-org.github.io/Jon/tutorials/
 - Terms Of Service: https://jonbot-org.github.io/Jon/discord/Terms

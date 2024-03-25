@@ -37,7 +37,7 @@ export class JonBot extends Client {
   }
 
   public async handleCommands() {
-    for (const file of fs.readdirSync(formatPath('/src/Commands/'))) {
+    for (const file of fs.readdirSync(formatPath("/src/Commands/"))) {
       const object = await import(`../../Commands/${file.split(".")[0]}`);
       const command = object.command;
 
@@ -50,14 +50,14 @@ export class JonBot extends Client {
         this.messageCommands.set(command.application.data.name, command);
       }
     }
-   
+
     this.rest.put(Routes.applicationCommands(process.env.CLIENT_ID!), {
       body: this.applicationCommandsData,
     });
   }
 
   public async handleEvents() {
-    for (const folder of fs.readdirSync(formatPath('./src/Events/'))) {
+    for (const folder of fs.readdirSync(formatPath("./src/Events/"))) {
       for (const file of fs.readdirSync(formatPath(`./src/Events/${folder}`))) {
         const event = await import(
           `../../Events/${folder}/${file.split(".")[0]}`

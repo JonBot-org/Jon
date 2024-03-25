@@ -11,11 +11,10 @@ export function run(client: JonBot) {
     process.env.NODE_ENV = "production";
   } else {
     process.env.NODE_ENV = "development";
-  };
-
+  }
 
   client.logger.info(
-    `Ready! ${client.user?.username} - ${process.env.NODE_ENV}`
+    `Ready! ${client.user?.username} - ${process.env.NODE_ENV}`,
   );
 
   client.handleCommands();

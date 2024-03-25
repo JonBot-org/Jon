@@ -12,7 +12,7 @@ export async function HandleGreetModule(member: GuildMember, data: any) {
   let embed;
   if (name != null)
     embed = (await Embed.find({ guild: member.guild.id })).find(
-      (v) => v.name === name
+      (v) => v.name === name,
     );
   if (name && !embed) embed = null;
 
@@ -73,7 +73,7 @@ export async function HandleGreetModule(member: GuildMember, data: any) {
 }
 
 export async function handleSubcommands(
-  int: ChatInputCommandInteraction
+  int: ChatInputCommandInteraction,
 ): Promise<SubCommandFunctionR> {
   if (!int.options.getSubcommandGroup()) {
     try {

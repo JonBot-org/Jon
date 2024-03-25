@@ -18,20 +18,28 @@ const client = new JonBot({
   shards: "auto",
   presence: {
     status: "dnd",
-    activities: [{
-      name: 'Meow!',
-      type: ActivityType.Playing
-    }]
+    activities: [
+      {
+        name: "Meow!",
+        type: ActivityType.Playing,
+      },
+    ],
   },
 });
 
-process.on('uncaughtException', (error: Error, origin: NodeJS.UncaughtExceptionOrigin) => {
-  client.logger.error(error, 1);
-});
+process.on(
+  "uncaughtException",
+  (error: Error, origin: NodeJS.UncaughtExceptionOrigin) => {
+    client.logger.error(error, 1);
+  },
+);
 
-process.on('unhandledRejection', (reason: unknown, promise: Promise<unknown>) => {
-  client.logger.error(reason, 1);
-});
+process.on(
+  "unhandledRejection",
+  (reason: unknown, promise: Promise<unknown>) => {
+    client.logger.error(reason, 1);
+  },
+);
 
 // Login to Discord.
 client.login();

@@ -36,24 +36,14 @@ export const command: CommandOptions = {
               .setRequired(true);
           });
       })
-      .addSubcommandGroup((input) => {
+      .addSubcommand((input) => {
         return input
-          .setName("get")
-          .setDescription("More embed commands.")
-          .addSubcommand((command) => {
-            return command
-              .setName("all")
-              .setDescription("Get all the embeds belonging to this guild.");
-          })
-          .addSubcommand((command) => {
-            return command
-              .setName("info")
-              .setDescription("Get information on a specific embed.")
-              .addStringOption((option) => {
-                return option
-                  .setName("name")
-                  .setDescription("The name of the embed.");
-              });
+          .setName("display")
+          .setDescription("Display all the embeds that belong to this guild.")
+          .addStringOption((option) => {
+            return option
+              .setName("name")
+              .setDescription("Input embef name if you want to get that embed");
           });
       }),
   },

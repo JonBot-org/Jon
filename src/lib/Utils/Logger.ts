@@ -7,14 +7,13 @@ export class Logger {
   /**
    * Log stuff.
    */
-  public constructor() {
-  }
+  public constructor() {}
 
   public info(str: string) {
     console.log(
       chalk.green("[INFO] ->"),
       chalk.redBright(`${this.time()}:`),
-      str
+      str,
     );
   }
 
@@ -22,7 +21,7 @@ export class Logger {
     console.log(
       chalk.whiteBright("[DEBUG] ->"),
       chalk.redBright(`${this.time()}:`),
-      message
+      message,
     );
   }
 
@@ -31,10 +30,9 @@ export class Logger {
       console.log(
         chalk.yellowBright("[ERROR] ->"),
         chalk.redBright(`${this.time()}:`),
-        error
+        error,
       );
-    }
-
+    };
 
     if (level === 0) {
       log();
@@ -48,8 +46,8 @@ export class Logger {
       const embed = new EmbedBuilder()
         .setDescription(
           `**Logged Error!**\n- Level: ${level}\n- Logged Time: ${this.time()}\n- Error:\n${codeBlock(
-            `${error}`
-          )}`
+            `${error}`,
+          )}`,
         )
         .setColor("Orange")
         .setTimestamp();
@@ -57,8 +55,6 @@ export class Logger {
       webhook.send({ embeds: [embed], username: "Jon" }).catch(console.error);
       return;
     }
-
-    
   }
 
   public time(): string {
