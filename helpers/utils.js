@@ -97,14 +97,26 @@ module.exports.Utils = {
      */
     variables: (member, str) => {
       return str
-      .replaceAll('{user.name}', member.user.username)
-      .replaceAll('{user.pfp}', member.user.displayAvatarURL({ extension: ImageFormat.PNG, size: 524 }))
-      .replaceAll('{user.createdAt}', moment(new Date(member.user.createdAt)).format('DD/MM/YYYY'))
-      .replaceAll('{user.joinedAt}', moment(new Date(member.joinedAt)).format('DD/MM/YYYY'))
+        .replaceAll("{user.name}", member.user.username)
+        .replaceAll(
+          "{user.pfp}",
+          member.user.displayAvatarURL({
+            extension: ImageFormat.PNG,
+            size: 524,
+          }),
+        )
+        .replaceAll(
+          "{user.createdAt}",
+          moment(new Date(member.user.createdAt)).format("DD/MM/YYYY"),
+        )
+        .replaceAll(
+          "{user.joinedAt}",
+          moment(new Date(member.joinedAt)).format("DD/MM/YYYY"),
+        )
 
-      .replaceAll('{utils.getTime}', moment().format('hh:mm:s'))
-      .replaceAll('{utils.getDate}', moment().format('DD/MM/YYYY'))
-    }
+        .replaceAll("{utils.getTime}", moment().format("hh:mm:s"))
+        .replaceAll("{utils.getDate}", moment().format("DD/MM/YYYY"));
+    },
   },
 
   //  Client Utilities.

@@ -8,6 +8,8 @@ module.exports = {
   run: (interaction) => {
     if (interaction.isChatInputCommand()) {
       require("../helpers/Interactions/ChatInputCommands")(interaction);
+    } else if (interaction.isButton()) {
+      require("../helpers/Interactions/ButtonInteractions")(interaction);
     }
   },
 };

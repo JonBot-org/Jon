@@ -51,12 +51,9 @@ module.exports = async (interaction) => {
     } else {
       await embeds.create({
         name: name,
-
-        data: {
-          authorName: `${interaction.user.username}:${interaction.user.id}`,
-          createdTime: `${moment().format("DD/MM/YYYY hh:mm")}`,
-          guildId: interaction.guildId,
-        },
+        authorId: interaction.user.id,
+        createdTime: `${moment().format("DD/MM/YYYY hh:mm")}`,
+        guildId: interaction.guildId,
 
         author: {
           name: Templates.embed_c.author.name,

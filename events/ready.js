@@ -11,10 +11,5 @@ module.exports = {
   run: async (client) => {
     Utils.write.info(`${client.user.username} is online!`);
     Handlers.rest.deploy(client);
-
-    const info = await Database.helpers.guilds.createDataIfNotFound(
-      "1199385421243752578",
-    );
-    Utils.write.info(info);
   },
 };

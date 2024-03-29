@@ -5,12 +5,9 @@ module.exports = mongoose.model(
   "embed",
   new mongoose.Schema({
     name: String,
-
-    data: {
-      authorName: String,
-      createdTime: String,
-      guildId: String,
-    },
+    authorId: String,
+    createdTime: String,
+    guildId: String,
 
     author: {
       name: String,

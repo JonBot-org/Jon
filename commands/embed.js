@@ -22,24 +22,24 @@ module.exports = {
     })
     .addSubcommand((input) => {
       return input
-      .setName('edit')
-      .setDescription('Edit an embed.')
-      .addStringOption((option) => {
-        return option
-        .setName('name')
-        .setDescription('The name of the embed you want to edit.')
-        .setRequired(true)
-      })
+        .setName("edit")
+        .setDescription("Edit an embed.")
+        .addStringOption((option) => {
+          return option
+            .setName("name")
+            .setDescription("The name of the embed you want to edit.")
+            .setRequired(true);
+        });
     })
     .addSubcommand((input) => {
       return input
-      .setName('delete') 
-      .setDescription('Delete an embed.')
-      .addStringOption((option) => {
-        return option
-        .setName('name')
-        .setDescription('The name of the embed you want to delete')
-        .setRequired(true)
-      })
-    })
+        .setName("delete")
+        .setDescription("Delete an embed.")
+        .addStringOption((option) => {
+          return option
+            .setName("name")
+            .setDescription("The name of the embed you want to delete")
+            .setRequired(true);
+        });
+    }),
 };
